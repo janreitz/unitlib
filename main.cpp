@@ -39,6 +39,7 @@ using DivideDimensions = Dimension<std::ratio_subtract<typename D1::L, typename 
   std::ratio_subtract<typename D1::N, typename D2::N>,
   std::ratio_subtract<typename D1::J, typename D2::J>>;
 
+using Dimensionless = Dimension<>;
 using Length = Dimension<std::ratio<1>>;
 using Mass = Dimension<std::ratio<0>, std::ratio<1>>;
 using Time = Dimension<std::ratio<0>, std::ratio<0>, std::ratio<1>>;
@@ -47,7 +48,14 @@ using ThermodynamicTemperature = Dimension<std::ratio<0>, std::ratio<0>, std::ra
 using AmountOfSubstance = Dimension<std::ratio<0>, std::ratio<0>, std::ratio<0>, std::ratio<0>, std::ratio<0>, std::ratio<1>>;
 using LuminousIntensity = Dimension<std::ratio<0>, std::ratio<0>, std::ratio<0>, std::ratio<0>, std::ratio<0>, std::ratio<0>, std::ratio<1>>;
 
+using Area = MultiplyDimensions<Length, Length>;
+using Volume = MultiplyDimensions<Length, Area>;
+using Frequency = DivideDimensions<Dimensionless, Time>;
 using Velocity = DivideDimensions<Length, Time>;
+using Acceleration = DivideDimensions<Velocity, Time>;
+using Force = MultiplyDimensions<Mass, Acceleration>;
+using Pressure = DivideDimensions<Force, Area>;
+
 
 template<typename Dimension, typename ValueType, typename ScalingFactor = std::ratio<1>> class Unit
 {
