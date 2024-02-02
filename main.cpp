@@ -20,33 +20,8 @@ struct Dimension
   using Th = ThermodynamicTemperature;
   using N = AmountOfSubstance;
   using J = LuminousIntensity;
-
-  // Operator overload for multiplying dimensions
-  template<typename Other> constexpr auto operator*(const Other &) const
-  {
-    return Dimension<std::ratio_add<L, typename Other::L>,
-      std::ratio_add<M, typename Other::M>,
-      std::ratio_add<T, typename Other::T>,
-      std::ratio_add<I, typename Other::I>,
-      std::ratio_add<Th, typename Other::Th>,
-      std::ratio_add<N, typename Other::N>,
-      std::ratio_add<J, typename Other::J>>{};
-  }
-
-  // Operator overload for dividing dimensions
-  template<typename Other> constexpr auto operator/(const Other &) const
-  {
-    return Dimension<std::ratio_subtract<L, typename Other::L>,
-      std::ratio_subtract<M, typename Other::M>,
-      std::ratio_subtract<T, typename Other::T>,
-      std::ratio_subtract<I, typename Other::I>,
-      std::ratio_subtract<Th, typename Other::Th>,
-      std::ratio_subtract<N, typename Other::N>,
-      std::ratio_subtract<J, typename Other::J>>{};
-  }
 };
 
-// Template alias for multiplying dimensions
 template<typename D1, typename D2>
 using MultiplyDimensions = Dimension<std::ratio_add<typename D1::L, typename D2::L>,
   std::ratio_add<typename D1::M, typename D2::M>,
