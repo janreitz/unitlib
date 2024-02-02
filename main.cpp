@@ -40,9 +40,13 @@ using DivideDimensions = Dimension<std::ratio_subtract<typename D1::L, typename 
   std::ratio_subtract<typename D1::J, typename D2::J>>;
 
 using Length = Dimension<std::ratio<1>>;
-using Area = MultiplyDimensions<Length, Length>;
+using Mass = Dimension<std::ratio<0>, std::ratio<1>>;
 using Time = Dimension<std::ratio<0>, std::ratio<0>, std::ratio<1>>;
-using Frequency = Dimension<std::ratio<0>, std::ratio<0>, std::ratio<-1>>;
+using ElectricCurrent = Dimension<std::ratio<0>, std::ratio<0>, std::ratio<0>, std::ratio<1>>;
+using ThermodynamicTemperature = Dimension<std::ratio<0>, std::ratio<0>, std::ratio<0>, std::ratio<0>, std::ratio<1>>;
+using AmountOfSubstance = Dimension<std::ratio<0>, std::ratio<0>, std::ratio<0>, std::ratio<0>, std::ratio<0>, std::ratio<1>>;
+using LuminousIntensity = Dimension<std::ratio<0>, std::ratio<0>, std::ratio<0>, std::ratio<0>, std::ratio<0>, std::ratio<0>, std::ratio<1>>;
+
 using Velocity = DivideDimensions<Length, Time>;
 
 template<typename Dimension, typename ValueType, typename ScalingFactor = std::ratio<1>> class Unit
