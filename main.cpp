@@ -1,6 +1,5 @@
 #include <iostream>
 #include <ratio>
-#include <string>
 #include <type_traits>
 
 template<typename Length = std::ratio<0>,
