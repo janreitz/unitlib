@@ -12,7 +12,7 @@ template<typename Length = std::ratio<0>,
   typename LuminousIntensity = std::ratio<0>>
 struct Dimension
 {
-  // Type aliases for template parameters makes them accessible later on
+  // Publicly expose template parameters for use in conversions and checks
   using L = Length;
   using M = Mass;
   using T = Time;
@@ -56,7 +56,6 @@ using MultiplyDimensions = Dimension<std::ratio_add<typename D1::L, typename D2:
   std::ratio_add<typename D1::N, typename D2::N>,
   std::ratio_add<typename D1::J, typename D2::J>>;
 
-// Template alias for dividing dimensions
 template<typename D1, typename D2>
 using DivideDimensions = Dimension<std::ratio_subtract<typename D1::L, typename D2::L>,
   std::ratio_subtract<typename D1::M, typename D2::M>,
@@ -77,15 +76,13 @@ template<typename Dimension, typename ValueType, typename ScalingFactor = std::r
   ValueType value_;
 
 public:
-  // Publicly expose the Dimension and ScalingFactor for use in conversions and checks
+  // Publicly expose template parameters for use in conversions and checks
   using D = Dimension;
   using VT = ValueType;
   using SF = ScalingFactor;
 
-  // Constructor
   explicit constexpr Unit(const ValueType &value) : value_(value) {}
 
-  // Getter for the unit value
   constexpr ValueType getValue() const { return value_; }
 
   constexpr operator ValueType() const { return getValue(); }
@@ -100,7 +97,6 @@ public:
                      * (OtherUnit::SF::den / static_cast<ValueType>(OtherUnit::SF::num)));
   }
 
-  // Operator overload for multiplying units
   template<typename OtherUnit> constexpr auto operator*(const OtherUnit &other) const
   {
     static_assert(std::is_same<ValueType, typename OtherUnit::VT>::value, "Incompatible ValueTypes");
@@ -109,7 +105,6 @@ public:
     return Unit<NewDimension, ValueType, NewScalingFactor>{ value_ * other.getValue() };
   }
 
-  // Operator overload for multiplying units
   template<typename OtherUnit> constexpr auto operator/(const OtherUnit &other) const
   {
     static_assert(std::is_same<ValueType, typename OtherUnit::VT>::value, "Incompatible ValueTypes");
@@ -119,12 +114,11 @@ public:
   }
 };
 
-// Assuming Length and Time dimensions are defined as before
 using Meter = Unit<Length, double>;// Base unit of Length
-using Kilometer = Unit<Length, double, std::ratio<1000>>;// 1000 meters in a kilometer
+using Kilometer = Unit<Length, double, std::ratio<1000>>;
 
 using Second = Unit<Time, double>;// Base unit of Time
-using Millisecond = Unit<Time, double, std::ratio<1, 1000>>;// 1000 milliseconds in a second
+using Millisecond = Unit<Time, double, std::ratio<1, 1000>>;
 using Minute = Unit<Time, double, std::ratio<60>>;
 using Hour = Unit<Time, double, std::ratio<3600>>;
 using Hertz = Unit<Frequency, double>;
