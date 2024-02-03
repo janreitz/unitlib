@@ -78,26 +78,28 @@ public:
   constexpr operator ValueType() const { return getValue(); }
 
   // Conversion function to another unit within the same dimension
-  template<typename OtherUnit> constexpr operator OtherUnit() const
+  template<typename OtherUnit> 
+  requires std::is_same_v<Dimension, typename OtherUnit::D>
+  constexpr operator OtherUnit() const
   {
-    static_assert(std::is_same<D, typename OtherUnit::D>::value, "Incompatible dimensions for conversion.");
-
     // Convert from this unit to the base unit, then from the base unit to the target unit
     return OtherUnit(value_ * (ScalingFactor::num / static_cast<ValueType>(ScalingFactor::den))
                      * (OtherUnit::SF::den / static_cast<ValueType>(OtherUnit::SF::num)));
   }
 
-  template<typename OtherUnit> constexpr auto operator*(const OtherUnit &other) const
+  template<typename OtherUnit> 
+  requires std::is_same_v<ValueType, typename OtherUnit::VT>
+  constexpr auto operator*(const OtherUnit &other) const
   {
-    static_assert(std::is_same<ValueType, typename OtherUnit::VT>::value, "Incompatible ValueTypes");
     using NewDimension = MultiplyDimensions<D, typename OtherUnit::D>;
     using NewScalingFactor = std::ratio_multiply<SF, typename OtherUnit::SF>;
     return Unit<NewDimension, ValueType, NewScalingFactor>{ value_ * other.getValue() };
   }
 
-  template<typename OtherUnit> constexpr auto operator/(const OtherUnit &other) const
+  template<typename OtherUnit> 
+  requires std::is_same_v<ValueType, typename OtherUnit::VT>
+  constexpr auto operator/(const OtherUnit &other) const
   {
-    static_assert(std::is_same<ValueType, typename OtherUnit::VT>::value, "Incompatible ValueTypes");
     using NewDimension = DivideDimensions<D, typename OtherUnit::D>;
     using NewScalingFactor = std::ratio_divide<SF, typename OtherUnit::SF>;
     return Unit<NewDimension, ValueType, NewScalingFactor>{ value_ / other.getValue() };
