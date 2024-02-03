@@ -138,7 +138,7 @@ template<typename ValueType> using Kilogram = Unit<Mass, ValueType>;
 template<typename ValueType> using Second = Unit<Time, ValueType>;
 template<typename ValueType> using Ampere = Unit<ElectricCurrent, ValueType>;
 template<typename ValueType> using Kelvin = Unit<Temperature, ValueType>;
-template<typename ValueType> using Mol = Unit<AmountOfSubstance, ValueType>;
+template<typename ValueType> using Mole = Unit<AmountOfSubstance, ValueType>;
 template<typename ValueType> using Candela = Unit<LuminousIntensity, ValueType>;
 
 template<typename ValueType> using Joule = Unit<Energy, ValueType>;
