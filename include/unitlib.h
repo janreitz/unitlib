@@ -2,7 +2,7 @@
 #include <ratio>
 #include <type_traits>
 
-namespace Unit {
+namespace Unitlib {
 
 template<typename Length = std::ratio<0>,
   typename Mass = std::ratio<0>,
