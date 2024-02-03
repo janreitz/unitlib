@@ -2,6 +2,8 @@
 #include <ratio>
 #include <type_traits>
 
+namespace Unit {
+
 template<typename Length = std::ratio<0>,
   typename Mass = std::ratio<0>,
   typename Time = std::ratio<0>,
@@ -93,7 +95,7 @@ public:
     return Unit<NewDimension, ValueType, NewScalingFactor>{ value_ / other.getValue() };
   }
 
-    template<typename OtherValueType>
+  template<typename OtherValueType>
     requires std::is_same_v<ValueType, OtherValueType>// Relax to compatibility
   constexpr auto operator/(const OtherValueType &other) const
   {
@@ -203,3 +205,4 @@ template<typename ValueType> using Millisecond = Unit<Time, ValueType, std::rati
 template<typename ValueType> using Minute = Unit<Time, ValueType, std::ratio<60>>;
 template<typename ValueType> using Hour = Unit<Time, ValueType, std::ratio<3600>>;
 template<typename ValueType> using Hertz = Unit<Frequency, ValueType>;
+}// namespace Unit
