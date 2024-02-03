@@ -126,9 +126,13 @@ using Mol = Unit<AmountOfSubstance, ValueType>;
 template<typename ValueType>
 using Candela = Unit<LuminousIntensity, ValueType>;
 
-using Kilometer = Unit<Length, double, std::ratio<1000>>;
-
-using Millisecond = Unit<Time, double, std::ratio<1, 1000>>;
-using Minute = Unit<Time, double, std::ratio<60>>;
-using Hour = Unit<Time, double, std::ratio<3600>>;
-using Hertz = Unit<Frequency, double>;
+template<typename ValueType>
+using Kilometer = Unit<Length, ValueType, std::ratio<1000>>;
+template<typename ValueType>
+using Millisecond = Unit<Time, ValueType, std::ratio<1, 1000>>;
+template<typename ValueType>
+using Minute = Unit<Time, ValueType, std::ratio<60>>;
+template<typename ValueType>
+using Hour = Unit<Time, ValueType, std::ratio<3600>>;
+template<typename ValueType>
+using Hertz = Unit<Frequency, ValueType>;
