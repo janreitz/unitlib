@@ -134,17 +134,11 @@ public:
 
 // SI units
 template<typename ValueType> using Meter = Unit<Length, ValueType>;
-
 template<typename ValueType> using Kilogram = Unit<Mass, ValueType>;
-
 template<typename ValueType> using Second = Unit<Time, ValueType>;
-
 template<typename ValueType> using Ampere = Unit<ElectricCurrent, ValueType>;
-
 template<typename ValueType> using Kelvin = Unit<ThermodynamicTemperature, ValueType>;
-
 template<typename ValueType> using Mol = Unit<AmountOfSubstance, ValueType>;
-
 template<typename ValueType> using Candela = Unit<LuminousIntensity, ValueType>;
 
 template<typename ValueType> using Centimeter = Unit<Length, ValueType, std::ratio<1, 100>>;
