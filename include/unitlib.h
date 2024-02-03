@@ -6,7 +6,7 @@ template<typename Length = std::ratio<0>,
   typename Mass = std::ratio<0>,
   typename Time = std::ratio<0>,
   typename ElectricCurrent = std::ratio<0>,
-  typename ThermodynamicTemperature = std::ratio<0>,
+  typename Temperature = std::ratio<0>,
   typename AmountOfSubstance = std::ratio<0>,
   typename LuminousIntensity = std::ratio<0>>
 struct Dimension
@@ -16,7 +16,7 @@ struct Dimension
   using M = Mass;
   using T = Time;
   using I = ElectricCurrent;
-  using Th = ThermodynamicTemperature;
+  using Th = Temperature;
   using N = AmountOfSubstance;
   using J = LuminousIntensity;
 };
@@ -44,7 +44,7 @@ using Length = Dimension<std::ratio<1>>;
 using Mass = Dimension<std::ratio<0>, std::ratio<1>>;
 using Time = Dimension<std::ratio<0>, std::ratio<0>, std::ratio<1>>;
 using ElectricCurrent = Dimension<std::ratio<0>, std::ratio<0>, std::ratio<0>, std::ratio<1>>;
-using ThermodynamicTemperature = Dimension<std::ratio<0>, std::ratio<0>, std::ratio<0>, std::ratio<0>, std::ratio<1>>;
+using Temperature = Dimension<std::ratio<0>, std::ratio<0>, std::ratio<0>, std::ratio<0>, std::ratio<1>>;
 using AmountOfSubstance =
   Dimension<std::ratio<0>, std::ratio<0>, std::ratio<0>, std::ratio<0>, std::ratio<0>, std::ratio<1>>;
 using LuminousIntensity =
@@ -132,14 +132,16 @@ public:
   }
 };
 
-// SI units
+// SI base units
 template<typename ValueType> using Meter = Unit<Length, ValueType>;
 template<typename ValueType> using Kilogram = Unit<Mass, ValueType>;
 template<typename ValueType> using Second = Unit<Time, ValueType>;
 template<typename ValueType> using Ampere = Unit<ElectricCurrent, ValueType>;
-template<typename ValueType> using Kelvin = Unit<ThermodynamicTemperature, ValueType>;
+template<typename ValueType> using Kelvin = Unit<Temperature, ValueType>;
 template<typename ValueType> using Mol = Unit<AmountOfSubstance, ValueType>;
 template<typename ValueType> using Candela = Unit<LuminousIntensity, ValueType>;
+
+template<typename ValueType> using Joule = Unit<Energy, ValueType>;
 
 template<typename ValueType> using Centimeter = Unit<Length, ValueType, std::ratio<1, 100>>;
 template<typename ValueType> using Kilometer = Unit<Length, ValueType, std::ratio<1000>>;
