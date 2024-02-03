@@ -126,6 +126,18 @@ public:
   }
 };
 
+template<typename Dimension, typename ValueType, typename ScalingFactor, typename Scalar>
+requires std::is_arithmetic_v<Scalar>
+constexpr auto operator*(const Scalar& scalar, const Unit<Dimension, ValueType, ScalingFactor>& unit) {
+    return Unit<Dimension, decltype(scalar * unit.getValue()), ScalingFactor>(scalar * unit.getValue());
+}
+
+template<typename Dimension, typename ValueType, typename ScalingFactor, typename Scalar>
+requires std::is_arithmetic_v<Scalar>
+constexpr auto operator/(const Scalar& scalar, const Unit<Dimension, ValueType, ScalingFactor>& unit) {
+    return Unit<Dimension, decltype(scalar * unit.getValue()), ScalingFactor>(scalar / unit.getValue());
+}
+
 // Dimensions of SI base units
 using Dimensionless = Dimension<>;
 using Length = Dimension<std::ratio<1>>;
