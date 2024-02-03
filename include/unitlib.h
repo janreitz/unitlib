@@ -54,6 +54,8 @@ using Velocity = DivideDimensions<Length, Time>;
 using Acceleration = DivideDimensions<Velocity, Time>;
 using Force = MultiplyDimensions<Mass, Acceleration>;
 using Pressure = DivideDimensions<Force, Area>;
+using Energy = MultiplyDimensions<Force, Length>;
+using Power = DivideDimensions<Energy, Time>;
 
 
 template<typename Dimension, typename ValueType, typename ScalingFactor = std::ratio<1>> class Unit
