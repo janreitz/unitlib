@@ -101,10 +101,30 @@ public:
   }
 };
 
-using Meter = Unit<Length, double>;// Base unit of Length
+// SI units
+template<typename ValueType>
+using Meter = Unit<Length, ValueType>;
+
+template<typename ValueType>
+using Kilogram = Unit<Mass, ValueType>;
+
+template<typename ValueType>
+using Second = Unit<Time, ValueType>;
+
+template<typename ValueType>
+using Ampere = Unit<ElectricCurrent, ValueType>;
+
+template<typename ValueType>
+using Kelvin = Unit<ThermodynamicTemperature, ValueType>;
+
+template<typename ValueType>
+using Mol = Unit<AmountOfSubstance, ValueType>;
+
+template<typename ValueType>
+using Candela = Unit<LuminousIntensity, ValueType>;
+
 using Kilometer = Unit<Length, double, std::ratio<1000>>;
 
-using Second = Unit<Time, double>;// Base unit of Time
 using Millisecond = Unit<Time, double, std::ratio<1, 1000>>;
 using Minute = Unit<Time, double, std::ratio<60>>;
 using Hour = Unit<Time, double, std::ratio<3600>>;

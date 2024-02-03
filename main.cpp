@@ -4,12 +4,12 @@
 
 int main(int, char **)
 {
-  constexpr Meter distance(100);// 100 meters
+  constexpr Meter<double> distance(100);// 100 meters
   constexpr Kilometer distance_km = distance;// Convert to kilometers
 
   std::cout << "Kilometers: " << double(distance_km) << '\n';
 
-  constexpr Second time(30);
+  constexpr Second<double> time(30);
   constexpr Millisecond time_ms = time;
   constexpr Hour time_h = time;
   std::cout << double(time_ms) << '\n';
