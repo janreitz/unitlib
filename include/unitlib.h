@@ -1,5 +1,6 @@
 #include <ratio>
 #include <type_traits>
+#include <concepts>
 
 template<typename Length = std::ratio<0>,
   typename Mass = std::ratio<0>,
@@ -58,7 +59,9 @@ using Energy = MultiplyDimensions<Force, Length>;
 using Power = DivideDimensions<Energy, Time>;
 
 
-template<typename Dimension, typename ValueType, typename ScalingFactor = std::ratio<1>> class Unit
+template<typename Dimension, typename ValueType, typename ScalingFactor = std::ratio<1>> 
+requires std::integral<ValueType> || std::floating_point<ValueType>
+class Unit
 {
   ValueType value_;
 
