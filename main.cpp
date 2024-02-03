@@ -9,7 +9,7 @@ int main(int, char **)
   constexpr Centimeter<double> addition_result = distance + distance_km;
   constexpr Meter<double> subtraction_result = distance - distance_km;
 
-  std::cout << "Centimeter: " << double(Centimeter<double>(distance)) << '\n';
+  std::cout << "Centimeter: " << double(Centimeter<double>(distance) * 5) << '\n';
   std::cout << "Kilometer: " << double(Kilometer<double>(distance)) << '\n';
   std::cout << "Addition result: " << double(addition_result) << '\n';
   std::cout << "Subtraction result: " << double(subtraction_result) << '\n';

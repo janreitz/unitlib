@@ -76,6 +76,14 @@ public:
     return Unit<NewDimension, ValueType, NewScalingFactor>{ value_ * other.getValue() };
   }
 
+  template<typename OtherValueType>
+    requires std::is_same_v<ValueType, OtherValueType>// Relax to compatibility
+  constexpr auto operator*(const OtherValueType &other) const
+  {
+    using ResultValueType = decltype(value_ * other);
+    return Unit<Dimension, ResultValueType, ScalingFactor>(value_ * other);
+  }
+
   template<typename OtherUnit>
     requires std::is_same_v<ValueType, typename OtherUnit::VT>
   constexpr auto operator/(const OtherUnit &other) const
@@ -163,15 +171,16 @@ template<typename ValueType> using Pascal = Unit<Pressure, ValueType>;
 template<typename ValueType> using Joule = Unit<Energy, ValueType>;
 template<typename ValueType> using Watt = Unit<Power, ValueType>;
 template<typename ValueType> using Coulomb = Unit<ElectricCharge, ValueType>;
-template<typename ValueType> using Volt = Unit<ElectricPotential , ValueType>;
+template<typename ValueType> using Volt = Unit<ElectricPotential, ValueType>;
 template<typename ValueType> using Farad = Unit<Capacitance, ValueType>;
 template<typename ValueType> using Ohm = Unit<ElectricalResistance, ValueType>;
-template<typename ValueType> using Siemens = Unit<ElectricalConductance , ValueType>;
-template<typename ValueType> using Weber = Unit<MagneticFlux , ValueType>;
-template<typename ValueType> using Tesla = Unit<MagneticFluxDensity , ValueType>;
+template<typename ValueType> using Siemens = Unit<ElectricalConductance, ValueType>;
+template<typename ValueType> using Weber = Unit<MagneticFlux, ValueType>;
+template<typename ValueType> using Tesla = Unit<MagneticFluxDensity, ValueType>;
 template<typename ValueType> using Henry = Unit<Inductance, ValueType>;
 // TODO: How to handle units with offsets?
-// template<typename ValueType> using DegreeCelsius = Unit<Temperature , ValueType>; // Celsius	°C	temperature relative to 273.15 K	K	
+// template<typename ValueType> using DegreeCelsius = Unit<Temperature , ValueType>; // Celsius	°C	temperature
+// relative to 273.15 K	K
 template<typename ValueType> using Lumen = Unit<LuminousFlux, ValueType>;
 template<typename ValueType> using Lux = Unit<Illuminance, ValueType>;
 template<typename ValueType> using Becquerel = Unit<RadioactiveDose, ValueType>;
