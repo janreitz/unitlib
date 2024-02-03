@@ -6,8 +6,13 @@ int main(int, char **)
 {
   constexpr Meter<double> distance(100);
   constexpr Kilometer<double> distance_km = distance;
+  constexpr Centimeter<double> addition_result = distance + distance_km;
+  constexpr Meter<double> subtraction_result = distance - distance_km;
 
-  std::cout << "Kilometers: " << double(distance_km) << '\n';
+  std::cout << "Centimeter: " << double(Centimeter<double>(distance)) << '\n';
+  std::cout << "Kilometer: " << double(Kilometer<double>(distance)) << '\n';
+  std::cout << "Addition result: " << double(addition_result) << '\n';
+  std::cout << "Subtraction result: " << double(subtraction_result) << '\n';
 
   constexpr Second<double> time(30);
   constexpr Millisecond<double> time_ms = time;

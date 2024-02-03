@@ -106,6 +106,30 @@ public:
     using NewScalingFactor = std::ratio_divide<SF, typename OtherUnit::SF>;
     return Unit<NewDimension, ValueType, NewScalingFactor>{ value_ / other.getValue() };
   }
+
+  template<typename OtherUnit>
+    requires std::is_same_v<Dimension, typename OtherUnit::D> && std::is_same_v<ValueType, typename OtherUnit::VT>
+  constexpr auto operator+(const OtherUnit &other) const
+  {
+    ValueType otherValueInThisUnitScale =
+      other.getValue() * (static_cast<ValueType>(OtherUnit::SF::num) / static_cast<ValueType>(OtherUnit::SF::den))
+      / (static_cast<ValueType>(ScalingFactor::num) / static_cast<ValueType>(ScalingFactor::den));
+
+    // Perform addition in the current unit's scale
+    return Unit<Dimension, ValueType, ScalingFactor>(value_ + otherValueInThisUnitScale);
+  }
+
+  template<typename OtherUnit>
+    requires std::is_same_v<Dimension, typename OtherUnit::D> && std::is_same_v<ValueType, typename OtherUnit::VT>
+  constexpr auto operator-(const OtherUnit &other) const
+  {
+    ValueType otherValueInThisUnitScale =
+      other.getValue() * (static_cast<ValueType>(OtherUnit::SF::num) / static_cast<ValueType>(OtherUnit::SF::den))
+      / (static_cast<ValueType>(ScalingFactor::num) / static_cast<ValueType>(ScalingFactor::den));
+
+    // Perform addition in the current unit's scale
+    return Unit<Dimension, ValueType, ScalingFactor>(value_ - otherValueInThisUnitScale);
+  }
 };
 
 // SI units
