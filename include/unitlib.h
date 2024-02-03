@@ -57,8 +57,6 @@ public:
 
   constexpr ValueType getValue() const { return value_; }
 
-  constexpr operator ValueType() const { return getValue(); }
-
   // Conversion function to another unit within the same dimension
   template<typename OtherUnit>
     requires std::is_same_v<Dimension, typename OtherUnit::D>
