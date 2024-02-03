@@ -1,6 +1,6 @@
+#include <concepts>
 #include <ratio>
 #include <type_traits>
-#include <concepts>
 
 template<typename Length = std::ratio<0>,
   typename Mass = std::ratio<0>,
@@ -45,8 +45,10 @@ using Mass = Dimension<std::ratio<0>, std::ratio<1>>;
 using Time = Dimension<std::ratio<0>, std::ratio<0>, std::ratio<1>>;
 using ElectricCurrent = Dimension<std::ratio<0>, std::ratio<0>, std::ratio<0>, std::ratio<1>>;
 using ThermodynamicTemperature = Dimension<std::ratio<0>, std::ratio<0>, std::ratio<0>, std::ratio<0>, std::ratio<1>>;
-using AmountOfSubstance = Dimension<std::ratio<0>, std::ratio<0>, std::ratio<0>, std::ratio<0>, std::ratio<0>, std::ratio<1>>;
-using LuminousIntensity = Dimension<std::ratio<0>, std::ratio<0>, std::ratio<0>, std::ratio<0>, std::ratio<0>, std::ratio<0>, std::ratio<1>>;
+using AmountOfSubstance =
+  Dimension<std::ratio<0>, std::ratio<0>, std::ratio<0>, std::ratio<0>, std::ratio<0>, std::ratio<1>>;
+using LuminousIntensity =
+  Dimension<std::ratio<0>, std::ratio<0>, std::ratio<0>, std::ratio<0>, std::ratio<0>, std::ratio<0>, std::ratio<1>>;
 
 using Area = MultiplyDimensions<Length, Length>;
 using Volume = MultiplyDimensions<Length, Area>;
@@ -59,8 +61,8 @@ using Energy = MultiplyDimensions<Force, Length>;
 using Power = DivideDimensions<Energy, Time>;
 
 
-template<typename Dimension, typename ValueType, typename ScalingFactor = std::ratio<1>> 
-requires std::integral<ValueType> || std::floating_point<ValueType>
+template<typename Dimension, typename ValueType, typename ScalingFactor = std::ratio<1>>
+  requires std::integral<ValueType> || std::floating_point<ValueType>
 class Unit
 {
   ValueType value_;
@@ -78,8 +80,8 @@ public:
   constexpr operator ValueType() const { return getValue(); }
 
   // Conversion function to another unit within the same dimension
-  template<typename OtherUnit> 
-  requires std::is_same_v<Dimension, typename OtherUnit::D>
+  template<typename OtherUnit>
+    requires std::is_same_v<Dimension, typename OtherUnit::D>
   constexpr operator OtherUnit() const
   {
     // Convert from this unit to the base unit, then from the base unit to the target unit
@@ -87,8 +89,8 @@ public:
                      * (OtherUnit::SF::den / static_cast<ValueType>(OtherUnit::SF::num)));
   }
 
-  template<typename OtherUnit> 
-  requires std::is_same_v<ValueType, typename OtherUnit::VT>
+  template<typename OtherUnit>
+    requires std::is_same_v<ValueType, typename OtherUnit::VT>
   constexpr auto operator*(const OtherUnit &other) const
   {
     using NewDimension = MultiplyDimensions<D, typename OtherUnit::D>;
@@ -96,8 +98,8 @@ public:
     return Unit<NewDimension, ValueType, NewScalingFactor>{ value_ * other.getValue() };
   }
 
-  template<typename OtherUnit> 
-  requires std::is_same_v<ValueType, typename OtherUnit::VT>
+  template<typename OtherUnit>
+    requires std::is_same_v<ValueType, typename OtherUnit::VT>
   constexpr auto operator/(const OtherUnit &other) const
   {
     using NewDimension = DivideDimensions<D, typename OtherUnit::D>;
@@ -107,34 +109,23 @@ public:
 };
 
 // SI units
-template<typename ValueType>
-using Meter = Unit<Length, ValueType>;
+template<typename ValueType> using Meter = Unit<Length, ValueType>;
 
-template<typename ValueType>
-using Kilogram = Unit<Mass, ValueType>;
+template<typename ValueType> using Kilogram = Unit<Mass, ValueType>;
 
-template<typename ValueType>
-using Second = Unit<Time, ValueType>;
+template<typename ValueType> using Second = Unit<Time, ValueType>;
 
-template<typename ValueType>
-using Ampere = Unit<ElectricCurrent, ValueType>;
+template<typename ValueType> using Ampere = Unit<ElectricCurrent, ValueType>;
 
-template<typename ValueType>
-using Kelvin = Unit<ThermodynamicTemperature, ValueType>;
+template<typename ValueType> using Kelvin = Unit<ThermodynamicTemperature, ValueType>;
 
-template<typename ValueType>
-using Mol = Unit<AmountOfSubstance, ValueType>;
+template<typename ValueType> using Mol = Unit<AmountOfSubstance, ValueType>;
 
-template<typename ValueType>
-using Candela = Unit<LuminousIntensity, ValueType>;
+template<typename ValueType> using Candela = Unit<LuminousIntensity, ValueType>;
 
-template<typename ValueType>
-using Kilometer = Unit<Length, ValueType, std::ratio<1000>>;
-template<typename ValueType>
-using Millisecond = Unit<Time, ValueType, std::ratio<1, 1000>>;
-template<typename ValueType>
-using Minute = Unit<Time, ValueType, std::ratio<60>>;
-template<typename ValueType>
-using Hour = Unit<Time, ValueType, std::ratio<3600>>;
-template<typename ValueType>
-using Hertz = Unit<Frequency, ValueType>;
+template<typename ValueType> using Centimeter = Unit<Length, ValueType, std::ratio<1, 100>>;
+template<typename ValueType> using Kilometer = Unit<Length, ValueType, std::ratio<1000>>;
+template<typename ValueType> using Millisecond = Unit<Time, ValueType, std::ratio<1, 1000>>;
+template<typename ValueType> using Minute = Unit<Time, ValueType, std::ratio<60>>;
+template<typename ValueType> using Hour = Unit<Time, ValueType, std::ratio<3600>>;
+template<typename ValueType> using Hertz = Unit<Frequency, ValueType>;
