@@ -93,6 +93,14 @@ public:
     return Unit<NewDimension, ValueType, NewScalingFactor>{ value_ / other.getValue() };
   }
 
+    template<typename OtherValueType>
+    requires std::is_same_v<ValueType, OtherValueType>// Relax to compatibility
+  constexpr auto operator/(const OtherValueType &other) const
+  {
+    using ResultValueType = decltype(value_ / other);
+    return Unit<Dimension, ResultValueType, ScalingFactor>(value_ / other);
+  }
+
   template<typename OtherUnit>
     requires std::is_same_v<Dimension, typename OtherUnit::D> && std::is_same_v<ValueType, typename OtherUnit::VT>
   constexpr auto operator+(const OtherUnit &other) const
