@@ -127,15 +127,17 @@ public:
 };
 
 template<typename Dimension, typename ValueType, typename ScalingFactor, typename Scalar>
-requires std::is_arithmetic_v<Scalar>
-constexpr auto operator*(const Scalar& scalar, const Unit<Dimension, ValueType, ScalingFactor>& unit) {
-    return Unit<Dimension, decltype(scalar * unit.getValue()), ScalingFactor>(scalar * unit.getValue());
+  requires std::is_arithmetic_v<Scalar>
+constexpr auto operator*(const Scalar &scalar, const Unit<Dimension, ValueType, ScalingFactor> &unit)
+{
+  return Unit<Dimension, decltype(scalar * unit.getValue()), ScalingFactor>(scalar * unit.getValue());
 }
 
 template<typename Dimension, typename ValueType, typename ScalingFactor, typename Scalar>
-requires std::is_arithmetic_v<Scalar>
-constexpr auto operator/(const Scalar& scalar, const Unit<Dimension, ValueType, ScalingFactor>& unit) {
-    return Unit<Dimension, decltype(scalar * unit.getValue()), ScalingFactor>(scalar / unit.getValue());
+  requires std::is_arithmetic_v<Scalar>
+constexpr auto operator/(const Scalar &scalar, const Unit<Dimension, ValueType, ScalingFactor> &unit)
+{
+  return Unit<Dimension, decltype(scalar * unit.getValue()), ScalingFactor>(scalar / unit.getValue());
 }
 
 // Dimensions of SI base units
@@ -236,9 +238,10 @@ using Atto = std::ratio<1, 1000000000000000000>;
 
 
 namespace Literals {
-  // Literal for floating-point meter values
   inline constexpr Meter<double> operator"" _m(long double val) { return Meter<double>(static_cast<double>(val)); }
+  inline constexpr Meter<int64_t> operator"" _m(unsigned long long val) { return Meter<int64_t>(static_cast<int64_t>(val)); }
   inline constexpr Second<double> operator"" _s(long double val) { return Second<double>(static_cast<double>(val)); }
+  inline constexpr Second<int64_t> operator"" _s(unsigned long long val) { return Second<int64_t>(static_cast<int64_t>(val)); }
 
 }// namespace Literals
 

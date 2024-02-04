@@ -1,4 +1,5 @@
 #include "../include/unitlib.h"
+#include <cstdint>
 #include <type_traits>
 
 using namespace Unitlib;
@@ -45,8 +46,12 @@ int main(int, char**)
   // Test for arithmetic operations
 
   // Test literals
-  constexpr auto acceleration = 1.0_m/(1.0_s * 1.0_s);
+  constexpr auto acceleration = 1.0_m / (1.0_s * 1.0_s);
+  static_assert(acceleration.getValue() == 1.0, "Floating point literal failed");
 
-  static_assert(acceleration.getValue() == 1.0, "Literals not working");
+  constexpr auto acceleration_int = 1_m / (1_s * 1_s);
+  static_assert(std::is_same_v<decltype(acceleration_int)::VT, int64_t>, "Value Type of integer literal computation not as expected");
+  static_assert(std::is_same_v<decltype(acceleration_int)::D, Acceleration>, "Dimension of integer literal computation not as expected");
+  static_assert(acceleration_int.getValue() == 1, "Integer literals failed");
   return 0;
 }
