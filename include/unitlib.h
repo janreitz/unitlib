@@ -55,14 +55,14 @@ public:
 
   explicit constexpr Unit(const ValueType &value) : value_(value) {}
 
-  constexpr ValueType getValue() const { return value_; }
+  constexpr ValueType get_value() const { return value_; }
 
   template<typename OtherUnit>
     requires std::is_same_v<Dimension, typename OtherUnit::D> && std::is_same_v<ValueType, typename OtherUnit::VT>
-  constexpr ValueType getValueIn() const
+  constexpr ValueType get_value_in() const
   {
     const ValueType valueInBaseUnitScale =
-      getValue() * (static_cast<ValueType>(ScalingFactor::num) / static_cast<ValueType>(ScalingFactor::den));
+      get_value() * (static_cast<ValueType>(ScalingFactor::num) / static_cast<ValueType>(ScalingFactor::den));
     const ValueType valueInOtherUnitScale =
       valueInBaseUnitScale / (static_cast<ValueType>(OtherUnit::SF::num) / static_cast<ValueType>(OtherUnit::SF::den));
     return valueInOtherUnitScale;
@@ -84,7 +84,7 @@ public:
   {
     using NewDimension = MultiplyDimensions<D, typename OtherUnit::D>;
     using NewScalingFactor = std::ratio_multiply<SF, typename OtherUnit::SF>;
-    return Unit<NewDimension, ValueType, NewScalingFactor>{ value_ * other.getValue() };
+    return Unit<NewDimension, ValueType, NewScalingFactor>{ value_ * other.get_value() };
   }
 
   template<typename OtherValueType>
@@ -101,7 +101,7 @@ public:
   {
     using NewDimension = DivideDimensions<D, typename OtherUnit::D>;
     using NewScalingFactor = std::ratio_divide<SF, typename OtherUnit::SF>;
-    return Unit<NewDimension, ValueType, NewScalingFactor>{ value_ / other.getValue() };
+    return Unit<NewDimension, ValueType, NewScalingFactor>{ value_ / other.get_value() };
   }
 
   template<typename OtherValueType>
@@ -117,7 +117,7 @@ public:
   constexpr auto operator+(const OtherUnit &other) const
   {
     ValueType otherValueInThisUnitScale =
-      other.getValue() * (static_cast<ValueType>(OtherUnit::SF::num) / static_cast<ValueType>(OtherUnit::SF::den))
+      other.get_value() * (static_cast<ValueType>(OtherUnit::SF::num) / static_cast<ValueType>(OtherUnit::SF::den))
       / (static_cast<ValueType>(ScalingFactor::num) / static_cast<ValueType>(ScalingFactor::den));
 
     // Perform addition in the current unit's scale
@@ -129,7 +129,7 @@ public:
   constexpr auto operator-(const OtherUnit &other) const
   {
     ValueType otherValueInThisUnitScale =
-      other.getValue() * (static_cast<ValueType>(OtherUnit::SF::num) / static_cast<ValueType>(OtherUnit::SF::den))
+      other.get_value() * (static_cast<ValueType>(OtherUnit::SF::num) / static_cast<ValueType>(OtherUnit::SF::den))
       / (static_cast<ValueType>(ScalingFactor::num) / static_cast<ValueType>(ScalingFactor::den));
 
     // Perform addition in the current unit's scale
@@ -141,14 +141,14 @@ template<typename Dimension, typename ValueType, typename ScalingFactor, typenam
   requires std::is_arithmetic_v<Scalar>
 constexpr auto operator*(const Scalar &scalar, const Unit<Dimension, ValueType, ScalingFactor> &unit)
 {
-  return Unit<Dimension, decltype(scalar * unit.getValue()), ScalingFactor>(scalar * unit.getValue());
+  return Unit<Dimension, decltype(scalar * unit.get_value()), ScalingFactor>(scalar * unit.get_value());
 }
 
 template<typename Dimension, typename ValueType, typename ScalingFactor, typename Scalar>
   requires std::is_arithmetic_v<Scalar>
 constexpr auto operator/(const Scalar &scalar, const Unit<Dimension, ValueType, ScalingFactor> &unit)
 {
-  return Unit<Dimension, decltype(scalar * unit.getValue()), ScalingFactor>(scalar / unit.getValue());
+  return Unit<Dimension, decltype(scalar * unit.get_value()), ScalingFactor>(scalar / unit.get_value());
 }
 
 template<typename Unit, typename ExpectedDimension>

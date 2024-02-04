@@ -32,13 +32,13 @@ Second<double> time(5.0);
 
 using namespace Unitlib::Literals;
 auto temperature = 1_K;
-auto substanceAmount = 1.0_mol;
+auto substance_amount = 1.0_mol;
 ```
 
 You can create new Units with existing dimensions:
 ```cpp
 using Inch = Unit<Length, double, std::ratio<254, 10000>>;
-static_assert(Inch(1.0).getValueIn<Meter<double>>() == 0.0254);
+static_assert(Inch(1.0).get_value_in<Meter<double>>() == 0.0254);
 ```
 
 Create new dimensions by explicitly stating them in terms of SI base unit dimensions or by deriving them from existing dimensions:
@@ -73,11 +73,11 @@ unit_check<decltype(area), Area, double>();
 
 Or always use literals and auto and worry about units only when defining inputs and querying the result:
 ```cpp
-auto flowSpeed = 1_m/1_s;
-auto characteristicLength = 1_m;
-auto kinematicViscosity = 1_m * 1_m/1_s;
-auto reynoldsNumber = flowSpeed * characteristicLength/kinematicViscosity;
-unit_check<decltype(reynoldsNumber), Dimensionless, double>();
+auto flow_speed = 1_m/1_s;
+auto characteristic_length = 1_m;
+auto kinematic_viscosity = 1_m * 1_m/1_s;
+auto reynolds_number = flow_speed * characteristic_length/kinematic_viscosity;
+unit_check<decltype(reynolds_number), Dimensionless, double>();
 ```
 
 ### Constrain template parameters
