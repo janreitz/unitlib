@@ -94,3 +94,9 @@ constexpr auto reynolds_number(const U& flow_speed, const L& characteristic_leng
 
 ## Contributing
 Contributions, suggestions, and feedback are highly welcome. Whether it's adding new units, improving the library's interface, or optimizing existing code, your input can help make Unitlib better.
+
+Please install the pre-commit hook before committing any potential contributions, by performing this command in the repository root:
+```bash
+ln -s -f ../../hooks/pre-commit .git/hooks/pre-commit
+```
+This ensures that tests pass and the code is formatted consistently on each commit.

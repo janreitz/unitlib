@@ -1,0 +1,37 @@
+#!/bin/sh
+
+# Redirect output to stderr.
+exec 1>&2
+
+# Flag to indicate if any file was reformatted
+reformatted=0
+
+# Format staged files with clang-format and check for differences
+for file in $(git diff --cached --name-only --diff-filter=ACMR | grep -E '\.(cpp|hpp|c|h)$'); do
+    # Store the original version of the file
+    original=$(mktemp)
+    git show ":$file" > "$original"
+
+    # Format the file
+    clang-format -i "$file"
+
+    # Check if there are differences
+    if ! cmp -s "$original" "$file"; then
+        echo "Reformatted $file"
+        reformatted=1
+    fi
+
+    # Clean up the temporary file
+    rm "$original"
+done
+
+# Abort the commit if any file was reformatted
+if [ "$reformatted" -eq 1 ]; then
+    echo "Some files were reformatted. Please add them to staging and commit again."
+    exit 1
+fi
+
+if ! make test; then
+    echo "Tests failed. Please fix the issues before committing."
+    exit 1
+fi
