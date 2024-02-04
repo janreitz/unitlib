@@ -22,10 +22,9 @@ Make sure your compiler supports C++20, as Unitlib makes extensive use of C++20 
 ## Usage
 
 ### Defining Units
-Use predefined unit types for SI units by stating their types or using literals. or define your own:
+Use predefined unit types for SI units by stating their types or using literals:
 
 ```cpp
-Copy code
 using namespace Unitlib;
 
 Meter<double> length(2.0);
@@ -42,7 +41,7 @@ using Inch = Unit<Length, double, std::ratio<254, 10000>>;
 static_assert(Inch(1.0).getValueIn<Meter<double>>() == 0.0254);
 ```
 
-Or create new dimensions by explicitly stating them in terms of the dimensions of the SI base units or by deriving them from existing dimensions
+Create new dimensions by explicitly stating them in terms of SI base unit dimensions or by deriving them from existing dimensions:
 ```cpp
 using Velocity = Dimension<
     std::ratio<1>,  // Length
@@ -54,8 +53,8 @@ using Velocity = Dimension<
     std::ratio<0>>; // Luminous intensity
 
 using Torque = MultiplyDimensions<Force, Length>;
+using NewtonMeters = Unit<Torque, double>;
 ```
-
 
 ### Performing Operations
 Unitlib allows for natural arithmetic operations while ensuring type safety, even when converting between units of different dimensions:
@@ -94,4 +93,4 @@ constexpr auto reynolds_number(const U& flow_speed, const L& characteristic_leng
 ```
 
 ## Contributing
-Contributions, suggestions, and feedback are highly welcome. Whether it's adding new units, improving the library's interface, or optimizing existing code, your input can help make Unitlib a more comprehensive and user-friendly library.
+Contributions, suggestions, and feedback are highly welcome. Whether it's adding new units, improving the library's interface, or optimizing existing code, your input can help make Unitlib better.
