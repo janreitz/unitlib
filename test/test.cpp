@@ -25,7 +25,6 @@ int main(int, char **)
   static_assert(meter.get_value() == 1.0, "One meter should have a value of 1.0");
 
   // Test for dimensional analysis - multiplication
-  // constexpr Newton<double> newton = kilogram * 2.0 * (meter * 10.0 / (second * 2.0 * second * 2.0));
   constexpr Newton<double> newton = 2.0 * kilogram * (10.0 * meter / (2.0 * second * 2.0 * second));
   static_assert(newton.get_value() == 5.0, "Calculation of force in newtons failed");
 
@@ -50,6 +49,7 @@ int main(int, char **)
   constexpr Meter<double> totalmeter = meter1 + meter2;
   static_assert(totalmeter.get_value() == 1500.0, "Adding meters and kilometers failed");
   static_assert(Kilometer<double>(1.0).get_value_in<Meter<double>>() == 1000.0);
+  static_assert(Kilometer<double>(1.0) == Meter<double>(1000.0));
 
 
   // Custom unit definition
