@@ -42,7 +42,7 @@ using DivideDimensions = Dimension<std::ratio_subtract<typename D1::L, typename 
   std::ratio_subtract<typename D1::J, typename D2::J>>;
 
 template<typename Dimension, typename ValueType, typename ScalingFactor = std::ratio<1>>
-  requires std::integral<ValueType> || std::floating_point<ValueType>
+requires std::integral<ValueType> || std::floating_point<ValueType>
 class Unit
 {
   ValueType value_;
@@ -58,7 +58,7 @@ public:
   constexpr ValueType get_value() const { return value_; }
 
   template<typename OtherUnit>
-    requires std::is_same_v<Dimension, typename OtherUnit::D> && std::is_same_v<ValueType, typename OtherUnit::VT>
+  requires std::is_same_v<Dimension, typename OtherUnit::D> && std::is_same_v<ValueType, typename OtherUnit::VT>
   constexpr ValueType get_value_in() const
   {
     const ValueType valueInBaseUnitScale =
@@ -70,7 +70,7 @@ public:
 
   // Conversion function to another unit within the same dimension
   template<typename OtherUnit>
-    requires std::is_same_v<Dimension, typename OtherUnit::D>
+  requires std::is_same_v<Dimension, typename OtherUnit::D>
   constexpr operator OtherUnit() const
   {
     // Convert from this unit to the base unit, then from the base unit to the target unit
@@ -79,7 +79,7 @@ public:
   }
 
   template<typename OtherUnit>
-    requires std::is_same_v<ValueType, typename OtherUnit::VT>
+  requires std::is_same_v<ValueType, typename OtherUnit::VT>
   constexpr auto operator*(const OtherUnit &other) const
   {
     using NewDimension = MultiplyDimensions<D, typename OtherUnit::D>;
@@ -88,7 +88,7 @@ public:
   }
 
   template<typename OtherValueType>
-    requires std::is_same_v<ValueType, OtherValueType>// Relax to compatibility
+  requires std::is_same_v<ValueType, OtherValueType>// Relax to compatibility
   constexpr auto operator*(const OtherValueType &other) const
   {
     using ResultValueType = decltype(value_ * other);
@@ -96,7 +96,7 @@ public:
   }
 
   template<typename OtherUnit>
-    requires std::is_same_v<ValueType, typename OtherUnit::VT>
+  requires std::is_same_v<ValueType, typename OtherUnit::VT>
   constexpr auto operator/(const OtherUnit &other) const
   {
     using NewDimension = DivideDimensions<D, typename OtherUnit::D>;
@@ -105,7 +105,7 @@ public:
   }
 
   template<typename OtherValueType>
-    requires std::is_same_v<ValueType, OtherValueType>// Relax to compatibility
+  requires std::is_same_v<ValueType, OtherValueType>// Relax to compatibility
   constexpr auto operator/(const OtherValueType &other) const
   {
     using ResultValueType = decltype(value_ / other);
@@ -113,7 +113,7 @@ public:
   }
 
   template<typename OtherUnit>
-    requires std::is_same_v<Dimension, typename OtherUnit::D> && std::is_same_v<ValueType, typename OtherUnit::VT>
+  requires std::is_same_v<Dimension, typename OtherUnit::D> && std::is_same_v<ValueType, typename OtherUnit::VT>
   constexpr auto operator+(const OtherUnit &other) const
   {
     ValueType otherValueInThisUnitScale =
@@ -125,7 +125,7 @@ public:
   }
 
   template<typename OtherUnit>
-    requires std::is_same_v<Dimension, typename OtherUnit::D> && std::is_same_v<ValueType, typename OtherUnit::VT>
+  requires std::is_same_v<Dimension, typename OtherUnit::D> && std::is_same_v<ValueType, typename OtherUnit::VT>
   constexpr auto operator-(const OtherUnit &other) const
   {
     ValueType otherValueInThisUnitScale =
@@ -138,14 +138,14 @@ public:
 };
 
 template<typename Dimension, typename ValueType, typename ScalingFactor, typename Scalar>
-  requires std::is_arithmetic_v<Scalar>
+requires std::is_arithmetic_v<Scalar>
 constexpr auto operator*(const Scalar &scalar, const Unit<Dimension, ValueType, ScalingFactor> &unit)
 {
   return Unit<Dimension, decltype(scalar * unit.get_value()), ScalingFactor>(scalar * unit.get_value());
 }
 
 template<typename Dimension, typename ValueType, typename ScalingFactor, typename Scalar>
-  requires std::is_arithmetic_v<Scalar>
+requires std::is_arithmetic_v<Scalar>
 constexpr auto operator/(const Scalar &scalar, const Unit<Dimension, ValueType, ScalingFactor> &unit)
 {
   return Unit<Dimension, decltype(scalar * unit.get_value()), ScalingFactor>(scalar / unit.get_value());

@@ -7,17 +7,18 @@ using namespace Unitlib::Literals;
 
 template<typename U, typename L, typename v>
 requires HasDimension<U, Velocity> && HasDimension<L, Length> && HasDimension<v, KinematicViscosity>
-constexpr auto reynolds_number(const U& flow_speed, const L& characteristic_length, const v& kinematic_viscosity) {
-    return flow_speed * characteristic_length / kinematic_viscosity;
+constexpr auto reynolds_number(const U &flow_speed, const L &characteristic_length, const v &kinematic_viscosity)
+{
+  return flow_speed * characteristic_length / kinematic_viscosity;
 }
 
-int main(int, char**)
+int main(int, char **)
 {
   // Test for basic instantiation and value retrieval
   constexpr Meter<double> meter(1.0);
   constexpr Kilogram<double> kilogram(1.0);
   constexpr Second<double> second(1.0);
-  constexpr Ampere<double> ampere(1.0);
+  constexpr Ampere<double> ampere(5.0);
   constexpr Kelvin<double> kelvin(1.0);
   constexpr Mole<double> mole(1.0);
   constexpr Candela<double> candela(1.0);
@@ -66,5 +67,5 @@ int main(int, char**)
   return 0;
 
   // Test concepts
-  static_assert(reynolds_number(1_m/1_s, 1_m, 1_m * 1_m/1_s).get_value() == 1);
+  static_assert(reynolds_number(1_m / 1_s, 1_m, 1_m * 1_m / 1_s).get_value() == 1);
 }
