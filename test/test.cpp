@@ -18,7 +18,7 @@ int main(int, char **)
   constexpr Meter<double> meter(1.0);
   constexpr Kilogram<double> kilogram(1.0);
   constexpr Second<double> second(1.0);
-  constexpr Ampere<double> ampere(5.0);
+  constexpr Ampere<double> ampere(1.0);
   constexpr Kelvin<double> kelvin(1.0);
   constexpr Mole<double> mole(1.0);
   constexpr Candela<double> candela(1.0);
