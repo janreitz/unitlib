@@ -47,6 +47,8 @@ int main(int, char**)
   constexpr Kilometer<double> meter2(1.0);
   constexpr Meter<double> totalmeter = meter1 + meter2;
   static_assert(totalmeter.getValue() == 1500.0, "Adding meters and kilometers failed");
+  static_assert(Kilometer<double>(1.0).getValueIn<Meter<double>>() == 1000.0);
+
 
   // Test for arithmetic operations
 

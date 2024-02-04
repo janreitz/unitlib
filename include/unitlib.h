@@ -57,6 +57,17 @@ public:
 
   constexpr ValueType getValue() const { return value_; }
 
+  template<typename OtherUnit>
+    requires std::is_same_v<Dimension, typename OtherUnit::D> && std::is_same_v<ValueType, typename OtherUnit::VT>
+  constexpr ValueType getValueIn() const
+  {
+    const ValueType valueInBaseUnitScale =
+      getValue() * (static_cast<ValueType>(ScalingFactor::num) / static_cast<ValueType>(ScalingFactor::den));
+    const ValueType valueInOtherUnitScale =
+      valueInBaseUnitScale / (static_cast<ValueType>(OtherUnit::SF::num) / static_cast<ValueType>(OtherUnit::SF::den));
+    return valueInOtherUnitScale;
+  }
+
   // Conversion function to another unit within the same dimension
   template<typename OtherUnit>
     requires std::is_same_v<Dimension, typename OtherUnit::D>
