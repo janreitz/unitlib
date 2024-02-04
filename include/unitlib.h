@@ -256,23 +256,47 @@ using Atto = std::ratio<1, 1000000000000000000>;
 
 namespace Literals {
   inline constexpr Meter<double> operator"" _m(long double val) { return Meter<double>(static_cast<double>(val)); }
-  inline constexpr Meter<int64_t> operator"" _m(unsigned long long val) { return Meter<int64_t>(static_cast<int64_t>(val)); }
-  inline constexpr Kilogram<double> operator"" _kg(long double val) { return Kilogram<double>(static_cast<double>(val)); }
-  inline constexpr Kilogram<int64_t> operator"" _kg(unsigned long long val) { return Kilogram<int64_t>(static_cast<int64_t>(val)); }
+  inline constexpr Meter<int64_t> operator"" _m(unsigned long long val)
+  {
+    return Meter<int64_t>(static_cast<int64_t>(val));
+  }
+  inline constexpr Kilogram<double> operator"" _kg(long double val)
+  {
+    return Kilogram<double>(static_cast<double>(val));
+  }
+  inline constexpr Kilogram<int64_t> operator"" _kg(unsigned long long val)
+  {
+    return Kilogram<int64_t>(static_cast<int64_t>(val));
+  }
   inline constexpr Second<double> operator"" _s(long double val) { return Second<double>(static_cast<double>(val)); }
-  inline constexpr Second<int64_t> operator"" _s(unsigned long long val) { return Second<int64_t>(static_cast<int64_t>(val)); }
+  inline constexpr Second<int64_t> operator"" _s(unsigned long long val)
+  {
+    return Second<int64_t>(static_cast<int64_t>(val));
+  }
   inline constexpr Ampere<double> operator"" _A(long double val) { return Ampere<double>(static_cast<double>(val)); }
-  inline constexpr Ampere<int64_t> operator"" _A(unsigned long long val) { return Ampere<int64_t>(static_cast<int64_t>(val)); }
+  inline constexpr Ampere<int64_t> operator"" _A(unsigned long long val)
+  {
+    return Ampere<int64_t>(static_cast<int64_t>(val));
+  }
   inline constexpr Kelvin<double> operator"" _K(long double val) { return Kelvin<double>(static_cast<double>(val)); }
-  inline constexpr Kelvin<int64_t> operator"" _K(unsigned long long val) { return Kelvin<int64_t>(static_cast<int64_t>(val)); }
+  inline constexpr Kelvin<int64_t> operator"" _K(unsigned long long val)
+  {
+    return Kelvin<int64_t>(static_cast<int64_t>(val));
+  }
   inline constexpr Mole<double> operator"" _mol(long double val) { return Mole<double>(static_cast<double>(val)); }
-  inline constexpr Mole<int64_t> operator"" _mol(unsigned long long val) { return Mole<int64_t>(static_cast<int64_t>(val)); }
+  inline constexpr Mole<int64_t> operator"" _mol(unsigned long long val)
+  {
+    return Mole<int64_t>(static_cast<int64_t>(val));
+  }
   inline constexpr Candela<double> operator"" _cd(long double val) { return Candela<double>(static_cast<double>(val)); }
-  inline constexpr Candela<int64_t> operator"" _cd(unsigned long long val) { return Candela<int64_t>(static_cast<int64_t>(val)); }
+  inline constexpr Candela<int64_t> operator"" _cd(unsigned long long val)
+  {
+    return Candela<int64_t>(static_cast<int64_t>(val));
+  }
 }// namespace Literals
 
-template<typename Unit, typename ExpectedDimension, typename ExpectedValueType>
-constexpr void unit_check() { 
+template<typename Unit, typename ExpectedDimension, typename ExpectedValueType> constexpr void unit_check()
+{
   static_assert(std::is_same_v<typename Unit::D, ExpectedDimension>, "Dimension mismatch");
   static_assert(std::is_same_v<typename Unit::VT, ExpectedValueType>, "ValueType mismatch");
 }
