@@ -1,5 +1,6 @@
 #include "../include/unitlib.h"
 #include <cstdint>
+#include <ratio>
 
 using namespace Unitlib;
 using namespace Unitlib::Literals;
@@ -50,6 +51,9 @@ int main(int, char**)
   static_assert(Kilometer<double>(1.0).getValueIn<Meter<double>>() == 1000.0);
 
 
+  // Custom unit definition
+  using Inch = Unit<Length, double, std::ratio<254, 10000>>;
+  static_assert(Inch(1.0).getValueIn<Meter<double>>() == 0.0254);
   // Test for arithmetic operations
 
   // Test literals
