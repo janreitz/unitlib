@@ -1,9 +1,14 @@
 #include "../include/unitlib.h"
 #include <cstdint>
-#include <type_traits>
 
 using namespace Unitlib;
 using namespace Unitlib::Literals;
+
+template<typename U, typename L, typename v>
+requires HasDimension<U, Velocity> && HasDimension<L, Length> && HasDimension<v, KinematicViscosity>
+constexpr auto reynolds_number(const U& flow_speed, const L& characteristic_length, const v& kinematic_viscosity) {
+    return flow_speed * characteristic_length / kinematic_viscosity;
+}
 
 int main(int, char**)
 {
@@ -53,4 +58,7 @@ int main(int, char**)
   unit_check<decltype(acceleration_int), Acceleration, int64_t>();
   static_assert(acceleration_int.getValue() == 1, "Integer literals failed");
   return 0;
+
+  // Test concepts
+  static_assert(reynolds_number(1_m/1_s, 1_m, 1_m * 1_m/1_s).getValue() == 1);
 }

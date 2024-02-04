@@ -140,6 +140,9 @@ constexpr auto operator/(const Scalar &scalar, const Unit<Dimension, ValueType, 
   return Unit<Dimension, decltype(scalar * unit.getValue()), ScalingFactor>(scalar / unit.getValue());
 }
 
+template<typename Unit, typename ExpectedDimension>
+concept HasDimension = std::is_same_v<typename Unit::D, ExpectedDimension>;
+
 // Dimensions of SI base units
 using Dimensionless = Dimension<>;
 using Length = Dimension<std::ratio<1>>;
@@ -174,6 +177,9 @@ using LuminousFlux = LuminousIntensity;
 using Illuminance = DivideDimensions<LuminousIntensity, Area>;
 using RadioactiveDose = DivideDimensions<Energy, Mass>;
 using KatalyticActivity = DivideDimensions<AmountOfSubstance, Time>;
+
+// Non SI dimensions
+using KinematicViscosity = DivideDimensions<Area, Time>;
 
 // SI base units
 template<typename ValueType> using Meter = Unit<Length, ValueType>;
