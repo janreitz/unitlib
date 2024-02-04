@@ -2,6 +2,7 @@
 #include <type_traits>
 
 using namespace Unitlib;
+using namespace Unitlib::Literals;
 
 int main(int, char**)
 {
@@ -43,5 +44,9 @@ int main(int, char**)
 
   // Test for arithmetic operations
 
+  // Test literals
+  constexpr auto acceleration = 1.0_m/(1.0_s * 1.0_s);
+
+  static_assert(acceleration.getValue() == 1.0, "Literals not working");
   return 0;
 }

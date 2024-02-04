@@ -234,12 +234,12 @@ using Pico = std::ratio<1, 1000000000000>;
 using Femto = std::ratio<1, 1000000000000000>;
 using Atto = std::ratio<1, 1000000000000000000>;
 
-}// namespace Unit
 
+namespace Literals {
+  // Literal for floating-point meter values
+  inline constexpr Meter<double> operator"" _m(long double val) { return Meter<double>(static_cast<double>(val)); }
+  inline constexpr Second<double> operator"" _s(long double val) { return Second<double>(static_cast<double>(val)); }
 
+}// namespace Literals
 
-
-
-
-
-
+}// namespace Unitlib
