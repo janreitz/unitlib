@@ -245,4 +245,9 @@ namespace Literals {
 
 }// namespace Literals
 
+template<typename Unit, typename ExpectedDimension, typename ExpectedValueType>
+constexpr void unit_check() { 
+  static_assert(std::is_same_v<typename Unit::D, ExpectedDimension>, "Dimension mismatch");
+  static_assert(std::is_same_v<typename Unit::VT, ExpectedValueType>, "ValueType mismatch");
+}
 }// namespace Unitlib

@@ -50,8 +50,7 @@ int main(int, char**)
   static_assert(acceleration.getValue() == 1.0, "Floating point literal failed");
 
   constexpr auto acceleration_int = 1_m / (1_s * 1_s);
-  static_assert(std::is_same_v<decltype(acceleration_int)::VT, int64_t>, "Value Type of integer literal computation not as expected");
-  static_assert(std::is_same_v<decltype(acceleration_int)::D, Acceleration>, "Dimension of integer literal computation not as expected");
+  unit_check<decltype(acceleration_int), Acceleration, int64_t>();
   static_assert(acceleration_int.getValue() == 1, "Integer literals failed");
   return 0;
 }
