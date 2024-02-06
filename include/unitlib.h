@@ -71,12 +71,7 @@ public:
   // Conversion function to another unit within the same dimension
   template<typename OtherUnit>
   requires std::is_same_v<Dimension, typename OtherUnit::D>
-  constexpr operator OtherUnit() const
-  {
-    // Convert from this unit to the base unit, then from the base unit to the target unit
-    return OtherUnit(value_ * (ScalingFactor::num / static_cast<ValueType>(ScalingFactor::den))
-                     * (OtherUnit::SF::den / static_cast<ValueType>(OtherUnit::SF::num)));
-  }
+  constexpr operator OtherUnit() const { return OtherUnit(this->template get_value_in<OtherUnit>); }
 
   template<typename OtherUnit>
   requires std::is_same_v<Dimension, typename OtherUnit::D> && std::is_same_v<ValueType, typename OtherUnit::VT>
