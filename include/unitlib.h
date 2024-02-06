@@ -61,12 +61,14 @@ public:
   requires std::is_same_v<Dimension, typename TargetUnit::D> && std::is_same_v<ValueType, typename TargetUnit::VT>
   constexpr ValueType get_value_in() const
   {
-    const ValueType valueInBaseUnitScale =
-      get_value() * (static_cast<ValueType>(ScalingFactor::num) / static_cast<ValueType>(ScalingFactor::den));
     const ValueType valueInTargetUnitScale =
-      valueInBaseUnitScale
-      / (static_cast<ValueType>(TargetUnit::SF::num) / static_cast<ValueType>(TargetUnit::SF::den));
+      get_base_value() / (static_cast<ValueType>(TargetUnit::SF::num) / static_cast<ValueType>(TargetUnit::SF::den));
     return valueInTargetUnitScale;
+  }
+
+  constexpr ValueType get_base_value() const
+  {
+    return get_value() * (static_cast<ValueType>(ScalingFactor::num) / static_cast<ValueType>(ScalingFactor::den));
   }
 
   // Conversion function to another unit within the same dimension
