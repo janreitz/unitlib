@@ -78,11 +78,7 @@ public:
 
   template<typename OtherUnit>
   requires std::is_same_v<Dimension, typename OtherUnit::D> && std::is_same_v<ValueType, typename OtherUnit::VT>
-  constexpr bool operator==(const OtherUnit &other) const
-  {
-    using BaseUnit = Unit<Dimension, ValueType>;
-    return this->template get_value_in<BaseUnit>() == other.template get_value_in<BaseUnit>();
-  }
+  constexpr bool operator==(const OtherUnit &other) const { return get_base_value() == other.get_base_value(); }
 
   template<typename OtherUnit>
   requires std::is_same_v<ValueType, typename OtherUnit::VT>
