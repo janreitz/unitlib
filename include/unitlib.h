@@ -119,7 +119,7 @@ public:
   constexpr auto operator+(const OtherUnit &other) const
   {
     ValueType otherValueInThisUnitScale =
-      other.get_value() * (static_cast<ValueType>(OtherUnit::SF::num) / static_cast<ValueType>(OtherUnit::SF::den))
+      other.get_base_value()
       / (static_cast<ValueType>(ScalingFactor::num) / static_cast<ValueType>(ScalingFactor::den));
 
     // Perform addition in the current unit's scale
@@ -131,7 +131,7 @@ public:
   constexpr auto operator-(const OtherUnit &other) const
   {
     ValueType otherValueInThisUnitScale =
-      other.get_value() * (static_cast<ValueType>(OtherUnit::SF::num) / static_cast<ValueType>(OtherUnit::SF::den))
+      other.get_base_value()
       / (static_cast<ValueType>(ScalingFactor::num) / static_cast<ValueType>(ScalingFactor::den));
 
     // Perform addition in the current unit's scale
