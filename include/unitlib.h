@@ -88,15 +88,15 @@ public:
   {
     using NewDimension = MultiplyDimensions<D, typename OtherUnit::D>;
     using NewScalingFactor = std::ratio_multiply<SF, typename OtherUnit::SF>;
-    return Unit<NewDimension, ValueType, NewScalingFactor>{ value_ * other.get_value() };
+    return Unit<NewDimension, ValueType, NewScalingFactor>{ get_value() * other.get_value() };
   }
 
   template<typename OtherValueType>
   requires std::is_same_v<ValueType, OtherValueType>// Relax to compatibility
   constexpr auto operator*(const OtherValueType &other) const
   {
-    using ResultValueType = decltype(value_ * other);
-    return Unit<Dimension, ResultValueType, ScalingFactor>(value_ * other);
+    using ResultValueType = decltype(get_value() * other);
+    return Unit<Dimension, ResultValueType, ScalingFactor>(get_value() * other);
   }
 
   template<typename OtherUnit>
@@ -105,15 +105,15 @@ public:
   {
     using NewDimension = DivideDimensions<D, typename OtherUnit::D>;
     using NewScalingFactor = std::ratio_divide<SF, typename OtherUnit::SF>;
-    return Unit<NewDimension, ValueType, NewScalingFactor>{ value_ / other.get_value() };
+    return Unit<NewDimension, ValueType, NewScalingFactor>{ get_value() / other.get_value() };
   }
 
   template<typename OtherValueType>
   requires std::is_same_v<ValueType, OtherValueType>// Relax to compatibility
   constexpr auto operator/(const OtherValueType &other) const
   {
-    using ResultValueType = decltype(value_ / other);
-    return Unit<Dimension, ResultValueType, ScalingFactor>(value_ / other);
+    using ResultValueType = decltype(get_value() / other);
+    return Unit<Dimension, ResultValueType, ScalingFactor>(get_value() / other);
   }
 
   template<typename OtherUnit>
@@ -125,7 +125,7 @@ public:
       / (static_cast<ValueType>(ScalingFactor::num) / static_cast<ValueType>(ScalingFactor::den));
 
     // Perform addition in the current unit's scale
-    return Unit<Dimension, ValueType, ScalingFactor>(value_ + otherValueInThisUnitScale);
+    return Unit<Dimension, ValueType, ScalingFactor>(get_value() + otherValueInThisUnitScale);
   }
 
   template<typename OtherUnit>
@@ -137,7 +137,7 @@ public:
       / (static_cast<ValueType>(ScalingFactor::num) / static_cast<ValueType>(ScalingFactor::den));
 
     // Perform addition in the current unit's scale
-    return Unit<Dimension, ValueType, ScalingFactor>(value_ - otherValueInThisUnitScale);
+    return Unit<Dimension, ValueType, ScalingFactor>(get_value() - otherValueInThisUnitScale);
   }
 };
 
