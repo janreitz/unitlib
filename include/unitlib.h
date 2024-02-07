@@ -52,20 +52,22 @@ class Unit
 
 public:
   // Publicly expose template parameters for use in conversions and checks
-  using D = Dimension;
-  using VT = ValueType;
-  using SF = ScalingFactor;
+  using _Dimension = Dimension;
+  using _ValueType = ValueType;
+  using _ScalingFactor = ScalingFactor;
 
   explicit constexpr Unit(const ValueType &value) noexcept : value_(value) {}
 
   constexpr ValueType get_value() const noexcept { return value_; }
 
   template<typename TargetUnit>
-  requires std::is_same_v<Dimension, typename TargetUnit::D> && std::is_same_v<ValueType, typename TargetUnit::VT>
+  requires std::is_same_v<Dimension, typename TargetUnit::_Dimension> && std::is_same_v<ValueType,
+    typename TargetUnit::_ValueType>
   constexpr ValueType get_value_in() const noexcept
   {
-    const ValueType valueInTargetUnitScale =
-      get_base_value() * (static_cast<ValueType>(TargetUnit::SF::den) / static_cast<ValueType>(TargetUnit::SF::num));
+    const ValueType valueInTargetUnitScale = get_base_value()
+                                             * (static_cast<ValueType>(TargetUnit::_ScalingFactor::den)
+                                                / static_cast<ValueType>(TargetUnit::_ScalingFactor::num));
     return valueInTargetUnitScale;
   }
 
@@ -76,22 +78,23 @@ public:
 
   // Conversion function to another unit within the same dimension
   template<typename OtherUnit>
-  requires std::is_same_v<Dimension, typename OtherUnit::D>
+  requires std::is_same_v<Dimension, typename OtherUnit::_Dimension>
   constexpr operator OtherUnit() const noexcept { return OtherUnit(this->template get_value_in<OtherUnit>); }
 
   template<typename OtherUnit>
-  requires std::is_same_v<Dimension, typename OtherUnit::D> && std::is_same_v<ValueType, typename OtherUnit::VT>
+  requires std::is_same_v<Dimension, typename OtherUnit::_Dimension> && std::is_same_v<ValueType,
+    typename OtherUnit::_ValueType>
   constexpr bool operator==(const OtherUnit &other) const noexcept
   {
     return get_base_value() == other.get_base_value();
   }
 
   template<typename OtherUnit>
-  requires std::is_same_v<ValueType, typename OtherUnit::VT>
+  requires std::is_same_v<ValueType, typename OtherUnit::_ValueType>
   constexpr auto operator*(const OtherUnit &other) const noexcept
   {
-    using NewDimension = MultiplyDimensions<D, typename OtherUnit::D>;
-    using NewScalingFactor = std::ratio_multiply<SF, typename OtherUnit::SF>;
+    using NewDimension = MultiplyDimensions<_Dimension, typename OtherUnit::_Dimension>;
+    using NewScalingFactor = std::ratio_multiply<_ScalingFactor, typename OtherUnit::_ScalingFactor>;
     return Unit<NewDimension, ValueType, NewScalingFactor>{ get_value() * other.get_value() };
   }
 
@@ -103,11 +106,11 @@ public:
   }
 
   template<typename OtherUnit>
-  requires std::is_same_v<ValueType, typename OtherUnit::VT>
+  requires std::is_same_v<ValueType, typename OtherUnit::_ValueType>
   constexpr auto operator/(const OtherUnit &other) const
   {
-    using NewDimension = DivideDimensions<D, typename OtherUnit::D>;
-    using NewScalingFactor = std::ratio_divide<SF, typename OtherUnit::SF>;
+    using NewDimension = DivideDimensions<_Dimension, typename OtherUnit::_Dimension>;
+    using NewScalingFactor = std::ratio_divide<_ScalingFactor, typename OtherUnit::_ScalingFactor>;
     return Unit<NewDimension, ValueType, NewScalingFactor>{ get_value() / other.get_value() };
   }
 
@@ -119,14 +122,16 @@ public:
   }
 
   template<typename OtherUnit>
-  requires std::is_same_v<Dimension, typename OtherUnit::D> && std::is_same_v<ValueType, typename OtherUnit::VT>
+  requires std::is_same_v<Dimension, typename OtherUnit::_Dimension> && std::is_same_v<ValueType,
+    typename OtherUnit::_ValueType>
   constexpr auto operator+(const OtherUnit &other) const noexcept
   {
     return Unit{ get_value() + other.template get_value_in<Unit>() };
   }
 
   template<typename OtherUnit>
-  requires std::is_same_v<Dimension, typename OtherUnit::D> && std::is_same_v<ValueType, typename OtherUnit::VT>
+  requires std::is_same_v<Dimension, typename OtherUnit::_Dimension> && std::is_same_v<ValueType,
+    typename OtherUnit::_ValueType>
   constexpr auto operator-(const OtherUnit &other) const noexcept
   {
     return Unit{ get_value() - other.template get_value_in<Unit>() };
@@ -148,7 +153,7 @@ constexpr auto operator/(const Scalar &scalar, const Unit<Dimension, ValueType, 
 }
 
 template<typename Unit, typename ExpectedDimension>
-concept HasDimension = std::is_same_v<typename Unit::D, ExpectedDimension>;
+concept HasDimension = std::is_same_v<typename Unit::_Dimension, ExpectedDimension>;
 
 // Dimensions of SI base units
 using Dimensionless = Dimension<>;
@@ -292,7 +297,7 @@ namespace Literals {
 
 template<typename Unit, typename ExpectedDimension, typename ExpectedValueType> constexpr void unit_check() noexcept
 {
-  static_assert(std::is_same_v<typename Unit::D, ExpectedDimension>, "Dimension mismatch");
-  static_assert(std::is_same_v<typename Unit::VT, ExpectedValueType>, "ValueType mismatch");
+  static_assert(std::is_same_v<typename Unit::_Dimension, ExpectedDimension>, "Dimension mismatch");
+  static_assert(std::is_same_v<typename Unit::_ValueType, ExpectedValueType>, "ValueType mismatch");
 }
 }// namespace Unitlib
