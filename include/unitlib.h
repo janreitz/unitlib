@@ -94,7 +94,7 @@ public:
   constexpr auto operator*(const OtherValueType &other) const
   {
     using ResultValueType = decltype(get_value() * other);
-    return Unit<Dimension, ResultValueType, ScalingFactor>(get_value() * other);
+    return Unit<Dimension, ResultValueType, ScalingFactor>{ get_value() * other };
   }
 
   template<typename OtherUnit>
@@ -111,7 +111,7 @@ public:
   constexpr auto operator/(const OtherValueType &other) const
   {
     using ResultValueType = decltype(get_value() / other);
-    return Unit<Dimension, ResultValueType, ScalingFactor>(get_value() / other);
+    return Unit<Dimension, ResultValueType, ScalingFactor>{ get_value() / other };
   }
 
   template<typename OtherUnit>
@@ -123,7 +123,7 @@ public:
       / (static_cast<ValueType>(ScalingFactor::num) / static_cast<ValueType>(ScalingFactor::den));
 
     // Perform addition in the current unit's scale
-    return Unit(get_value() + otherValueInThisUnitScale);
+    return Unit{ get_value() + otherValueInThisUnitScale };
   }
 
   template<typename OtherUnit>
@@ -135,7 +135,7 @@ public:
       / (static_cast<ValueType>(ScalingFactor::num) / static_cast<ValueType>(ScalingFactor::den));
 
     // Perform addition in the current unit's scale
-    return Unit(get_value() - otherValueInThisUnitScale);
+    return Unit{ get_value() - otherValueInThisUnitScale };
   }
 };
 
@@ -143,14 +143,14 @@ template<typename Dimension, typename ValueType, typename ScalingFactor, typenam
 requires std::is_arithmetic_v<Scalar>
 constexpr auto operator*(const Scalar &scalar, const Unit<Dimension, ValueType, ScalingFactor> &unit)
 {
-  return Unit<Dimension, decltype(scalar * unit.get_value()), ScalingFactor>(scalar * unit.get_value());
+  return Unit<Dimension, decltype(scalar * unit.get_value()), ScalingFactor>{ scalar * unit.get_value() };
 }
 
 template<typename Dimension, typename ValueType, typename ScalingFactor, typename Scalar>
 requires std::is_arithmetic_v<Scalar>
 constexpr auto operator/(const Scalar &scalar, const Unit<Dimension, ValueType, ScalingFactor> &unit)
 {
-  return Unit<Dimension, decltype(scalar * unit.get_value()), ScalingFactor>(scalar / unit.get_value());
+  return Unit<Dimension, decltype(scalar * unit.get_value()), ScalingFactor>{ scalar / unit.get_value() };
 }
 
 template<typename Unit, typename ExpectedDimension>
