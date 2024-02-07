@@ -56,20 +56,20 @@ public:
   using VT = ValueType;
   using SF = ScalingFactor;
 
-  explicit constexpr Unit(const ValueType &value) : value_(value) {}
+  explicit constexpr Unit(const ValueType &value) noexcept : value_(value) {}
 
-  constexpr ValueType get_value() const { return value_; }
+  constexpr ValueType get_value() const noexcept { return value_; }
 
   template<typename TargetUnit>
   requires std::is_same_v<Dimension, typename TargetUnit::D> && std::is_same_v<ValueType, typename TargetUnit::VT>
-  constexpr ValueType get_value_in() const
+  constexpr ValueType get_value_in() const noexcept
   {
     const ValueType valueInTargetUnitScale =
       get_base_value() / (static_cast<ValueType>(TargetUnit::SF::num) / static_cast<ValueType>(TargetUnit::SF::den));
     return valueInTargetUnitScale;
   }
 
-  constexpr ValueType get_base_value() const
+  constexpr ValueType get_base_value() const noexcept
   {
     return get_value() * (static_cast<ValueType>(ScalingFactor::num) / static_cast<ValueType>(ScalingFactor::den));
   }
@@ -77,15 +77,18 @@ public:
   // Conversion function to another unit within the same dimension
   template<typename OtherUnit>
   requires std::is_same_v<Dimension, typename OtherUnit::D>
-  constexpr operator OtherUnit() const { return OtherUnit(this->template get_value_in<OtherUnit>); }
+  constexpr operator OtherUnit() const noexcept { return OtherUnit(this->template get_value_in<OtherUnit>); }
 
   template<typename OtherUnit>
   requires std::is_same_v<Dimension, typename OtherUnit::D> && std::is_same_v<ValueType, typename OtherUnit::VT>
-  constexpr bool operator==(const OtherUnit &other) const { return get_base_value() == other.get_base_value(); }
+  constexpr bool operator==(const OtherUnit &other) const noexcept
+  {
+    return get_base_value() == other.get_base_value();
+  }
 
   template<typename OtherUnit>
   requires std::is_same_v<ValueType, typename OtherUnit::VT>
-  constexpr auto operator*(const OtherUnit &other) const
+  constexpr auto operator*(const OtherUnit &other) const noexcept
   {
     using NewDimension = MultiplyDimensions<D, typename OtherUnit::D>;
     using NewScalingFactor = std::ratio_multiply<SF, typename OtherUnit::SF>;
@@ -94,7 +97,7 @@ public:
 
   template<typename OtherValueType>
   requires std::is_same_v<ValueType, OtherValueType>// Relax to compatibility
-  constexpr auto operator*(const OtherValueType &other) const
+  constexpr auto operator*(const OtherValueType &other) const noexcept
   {
     using ResultValueType = decltype(get_value() * other);
     return Unit<Dimension, ResultValueType, ScalingFactor>{ get_value() * other };
@@ -119,14 +122,14 @@ public:
 
   template<typename OtherUnit>
   requires std::is_same_v<Dimension, typename OtherUnit::D> && std::is_same_v<ValueType, typename OtherUnit::VT>
-  constexpr auto operator+(const OtherUnit &other) const
+  constexpr auto operator+(const OtherUnit &other) const noexcept
   {
     return Unit{ get_value() + other.template get_value_in<Unit>() };
   }
 
   template<typename OtherUnit>
   requires std::is_same_v<Dimension, typename OtherUnit::D> && std::is_same_v<ValueType, typename OtherUnit::VT>
-  constexpr auto operator-(const OtherUnit &other) const
+  constexpr auto operator-(const OtherUnit &other) const noexcept
   {
     return Unit{ get_value() - other.template get_value_in<Unit>() };
   }
@@ -134,7 +137,7 @@ public:
 
 template<typename Dimension, typename ValueType, typename ScalingFactor, typename Scalar>
 requires std::is_arithmetic_v<Scalar>
-constexpr auto operator*(const Scalar &scalar, const Unit<Dimension, ValueType, ScalingFactor> &unit)
+constexpr auto operator*(const Scalar &scalar, const Unit<Dimension, ValueType, ScalingFactor> &unit) noexcept
 {
   return Unit<Dimension, decltype(scalar * unit.get_value()), ScalingFactor>{ scalar * unit.get_value() };
 }
@@ -250,47 +253,65 @@ using Atto = std::ratio<1, 1000000000000000000ULL>;
 
 
 namespace Literals {
-  inline constexpr Meter<double> operator"" _m(long double val) { return Meter<double>(static_cast<double>(val)); }
-  inline constexpr Meter<int64_t> operator"" _m(unsigned long long val)
+  inline constexpr Meter<double> operator"" _m(long double val) noexcept
+  {
+    return Meter<double>(static_cast<double>(val));
+  }
+  inline constexpr Meter<int64_t> operator"" _m(unsigned long long val) noexcept
   {
     return Meter<int64_t>(static_cast<int64_t>(val));
   }
-  inline constexpr Kilogram<double> operator"" _kg(long double val)
+  inline constexpr Kilogram<double> operator"" _kg(long double val) noexcept
   {
     return Kilogram<double>(static_cast<double>(val));
   }
-  inline constexpr Kilogram<int64_t> operator"" _kg(unsigned long long val)
+  inline constexpr Kilogram<int64_t> operator"" _kg(unsigned long long val) noexcept
   {
     return Kilogram<int64_t>(static_cast<int64_t>(val));
   }
-  inline constexpr Second<double> operator"" _s(long double val) { return Second<double>(static_cast<double>(val)); }
-  inline constexpr Second<int64_t> operator"" _s(unsigned long long val)
+  inline constexpr Second<double> operator"" _s(long double val) noexcept
+  {
+    return Second<double>(static_cast<double>(val));
+  }
+  inline constexpr Second<int64_t> operator"" _s(unsigned long long val) noexcept
   {
     return Second<int64_t>(static_cast<int64_t>(val));
   }
-  inline constexpr Ampere<double> operator"" _A(long double val) { return Ampere<double>(static_cast<double>(val)); }
-  inline constexpr Ampere<int64_t> operator"" _A(unsigned long long val)
+  inline constexpr Ampere<double> operator"" _A(long double val) noexcept
+  {
+    return Ampere<double>(static_cast<double>(val));
+  }
+  inline constexpr Ampere<int64_t> operator"" _A(unsigned long long val) noexcept
   {
     return Ampere<int64_t>(static_cast<int64_t>(val));
   }
-  inline constexpr Kelvin<double> operator"" _K(long double val) { return Kelvin<double>(static_cast<double>(val)); }
-  inline constexpr Kelvin<int64_t> operator"" _K(unsigned long long val)
+  inline constexpr Kelvin<double> operator"" _K(long double val) noexcept
+  {
+    return Kelvin<double>(static_cast<double>(val));
+  }
+  inline constexpr Kelvin<int64_t> operator"" _K(unsigned long long val) noexcept
   {
     return Kelvin<int64_t>(static_cast<int64_t>(val));
   }
-  inline constexpr Mole<double> operator"" _mol(long double val) { return Mole<double>(static_cast<double>(val)); }
-  inline constexpr Mole<int64_t> operator"" _mol(unsigned long long val)
+  inline constexpr Mole<double> operator"" _mol(long double val) noexcept
+  {
+    return Mole<double>(static_cast<double>(val));
+  }
+  inline constexpr Mole<int64_t> operator"" _mol(unsigned long long val) noexcept
   {
     return Mole<int64_t>(static_cast<int64_t>(val));
   }
-  inline constexpr Candela<double> operator"" _cd(long double val) { return Candela<double>(static_cast<double>(val)); }
-  inline constexpr Candela<int64_t> operator"" _cd(unsigned long long val)
+  inline constexpr Candela<double> operator"" _cd(long double val) noexcept
+  {
+    return Candela<double>(static_cast<double>(val));
+  }
+  inline constexpr Candela<int64_t> operator"" _cd(unsigned long long val) noexcept
   {
     return Candela<int64_t>(static_cast<int64_t>(val));
   }
 }// namespace Literals
 
-template<typename Unit, typename ExpectedDimension, typename ExpectedValueType> constexpr void unit_check()
+template<typename Unit, typename ExpectedDimension, typename ExpectedValueType> constexpr void unit_check() noexcept
 {
   static_assert(std::is_same_v<typename Unit::D, ExpectedDimension>, "Dimension mismatch");
   static_assert(std::is_same_v<typename Unit::VT, ExpectedValueType>, "ValueType mismatch");
