@@ -45,6 +45,9 @@ template<typename Dimension, typename ValueType, typename ScalingFactor = std::r
 requires std::integral<ValueType> || std::floating_point<ValueType>
 class Unit
 {
+  // TODO Can this be a concept?
+  static_assert(ScalingFactor::num != 0, "ScalingFactor must not be zero");
+
   ValueType value_;
 
 public:
