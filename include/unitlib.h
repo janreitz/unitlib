@@ -41,7 +41,10 @@ using DivideDimensions = Dimension<std::ratio_subtract<typename D1::L, typename 
   std::ratio_subtract<typename D1::N, typename D2::N>,
   std::ratio_subtract<typename D1::J, typename D2::J>>;
 
-template<typename Dimension, typename ValueType, typename ScalingFactor = std::ratio<1>>
+template<typename Dimension,
+  typename ValueType,
+  typename ScalingFactor = std::ratio<1>,
+  typename Offset = std::ratio<0>>
 requires std::is_arithmetic_v<ValueType>
 class Unit
 {
@@ -55,6 +58,7 @@ public:
   using _Dimension = Dimension;
   using _ValueType = ValueType;
   using _ScalingFactor = ScalingFactor;
+  using _Offset = Offset;
 
   explicit constexpr Unit(const ValueType &value) noexcept : value_(value) {}
 
@@ -65,15 +69,18 @@ public:
     typename TargetUnit::_ValueType>
   constexpr ValueType get_value_in() const noexcept
   {
-    const ValueType valueInTargetUnitScale = get_base_value()
-                                             * (static_cast<ValueType>(TargetUnit::_ScalingFactor::den)
-                                                / static_cast<ValueType>(TargetUnit::_ScalingFactor::num));
+    const ValueType valueInTargetUnitScale =
+      get_base_value()
+        * (static_cast<ValueType>(TargetUnit::_ScalingFactor::den)
+           / static_cast<ValueType>(TargetUnit::_ScalingFactor::num))
+      - (static_cast<ValueType>(TargetUnit::_Offset::num) / static_cast<ValueType>(TargetUnit::_Offset::den));
     return valueInTargetUnitScale;
   }
 
   constexpr ValueType get_base_value() const noexcept
   {
-    return get_value() * (static_cast<ValueType>(ScalingFactor::num) / static_cast<ValueType>(ScalingFactor::den));
+    return (get_value() + (static_cast<ValueType>(Offset::num) / static_cast<ValueType>(Offset::den)))
+           * (static_cast<ValueType>(ScalingFactor::num) / static_cast<ValueType>(ScalingFactor::den));
   }
 
   // Conversion function to another unit within the same dimension
