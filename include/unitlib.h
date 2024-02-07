@@ -65,7 +65,7 @@ public:
   constexpr ValueType get_value_in() const noexcept
   {
     const ValueType valueInTargetUnitScale =
-      get_base_value() / (static_cast<ValueType>(TargetUnit::SF::num) / static_cast<ValueType>(TargetUnit::SF::den));
+      get_base_value() * (static_cast<ValueType>(TargetUnit::SF::den) / static_cast<ValueType>(TargetUnit::SF::num));
     return valueInTargetUnitScale;
   }
 
