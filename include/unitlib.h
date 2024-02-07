@@ -42,7 +42,7 @@ using DivideDimensions = Dimension<std::ratio_subtract<typename D1::L, typename 
   std::ratio_subtract<typename D1::J, typename D2::J>>;
 
 template<typename Dimension, typename ValueType, typename ScalingFactor = std::ratio<1>>
-requires std::integral<ValueType> || std::floating_point<ValueType>
+requires std::is_arithmetic_v<ValueType>
 class Unit
 {
   // TODO Can this be a concept?
