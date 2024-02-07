@@ -123,7 +123,7 @@ public:
       / (static_cast<ValueType>(ScalingFactor::num) / static_cast<ValueType>(ScalingFactor::den));
 
     // Perform addition in the current unit's scale
-    return Unit<Dimension, ValueType, ScalingFactor>(get_value() + otherValueInThisUnitScale);
+    return Unit(get_value() + otherValueInThisUnitScale);
   }
 
   template<typename OtherUnit>
@@ -135,7 +135,7 @@ public:
       / (static_cast<ValueType>(ScalingFactor::num) / static_cast<ValueType>(ScalingFactor::den));
 
     // Perform addition in the current unit's scale
-    return Unit<Dimension, ValueType, ScalingFactor>(get_value() - otherValueInThisUnitScale);
+    return Unit(get_value() - otherValueInThisUnitScale);
   }
 };
 
