@@ -118,24 +118,14 @@ public:
   requires std::is_same_v<Dimension, typename OtherUnit::D> && std::is_same_v<ValueType, typename OtherUnit::VT>
   constexpr auto operator+(const OtherUnit &other) const
   {
-    ValueType otherValueInThisUnitScale =
-      other.get_base_value()
-      / (static_cast<ValueType>(ScalingFactor::num) / static_cast<ValueType>(ScalingFactor::den));
-
-    // Perform addition in the current unit's scale
-    return Unit{ get_value() + otherValueInThisUnitScale };
+    return Unit{ get_value() + other.template get_value_in<Unit>() };
   }
 
   template<typename OtherUnit>
   requires std::is_same_v<Dimension, typename OtherUnit::D> && std::is_same_v<ValueType, typename OtherUnit::VT>
   constexpr auto operator-(const OtherUnit &other) const
   {
-    ValueType otherValueInThisUnitScale =
-      other.get_base_value()
-      / (static_cast<ValueType>(ScalingFactor::num) / static_cast<ValueType>(ScalingFactor::den));
-
-    // Perform addition in the current unit's scale
-    return Unit{ get_value() - otherValueInThisUnitScale };
+    return Unit{ get_value() - other.template get_value_in<Unit>() };
   }
 };
 
