@@ -99,8 +99,7 @@ public:
   requires std::is_same_v<ValueType, OtherValueType>// Relax to compatibility
   constexpr auto operator*(const OtherValueType &other) const noexcept
   {
-    using ResultValueType = decltype(get_value() * other);
-    return Unit<Dimension, ResultValueType, ScalingFactor>{ get_value() * other };
+    return Unit<Dimension, std::common_reference_t<ValueType, OtherValueType>, ScalingFactor>{ get_value() * other };
   }
 
   template<typename OtherUnit>
@@ -116,8 +115,7 @@ public:
   requires std::is_same_v<ValueType, OtherValueType>// Relax to compatibility
   constexpr auto operator/(const OtherValueType &other) const
   {
-    using ResultValueType = decltype(get_value() / other);
-    return Unit<Dimension, ResultValueType, ScalingFactor>{ get_value() / other };
+    return Unit<Dimension, std::common_type_t<ValueType, OtherValueType>, ScalingFactor>{ get_value() / other };
   }
 
   template<typename OtherUnit>
@@ -139,14 +137,14 @@ template<typename Dimension, typename ValueType, typename ScalingFactor, typenam
 requires std::is_arithmetic_v<Scalar>
 constexpr auto operator*(const Scalar &scalar, const Unit<Dimension, ValueType, ScalingFactor> &unit) noexcept
 {
-  return Unit<Dimension, decltype(scalar * unit.get_value()), ScalingFactor>{ scalar * unit.get_value() };
+  return Unit<Dimension, std::common_type_t<ValueType, Scalar>, ScalingFactor>{ scalar * unit.get_value() };
 }
 
 template<typename Dimension, typename ValueType, typename ScalingFactor, typename Scalar>
 requires std::is_arithmetic_v<Scalar>
 constexpr auto operator/(const Scalar &scalar, const Unit<Dimension, ValueType, ScalingFactor> &unit)
 {
-  return Unit<Dimension, decltype(scalar * unit.get_value()), ScalingFactor>{ scalar / unit.get_value() };
+  return Unit<Dimension, std::common_type_t<ValueType, Scalar>, ScalingFactor>{ scalar / unit.get_value() };
 }
 
 template<typename Unit, typename ExpectedDimension>
