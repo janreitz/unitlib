@@ -233,25 +233,6 @@ template<typename ValueType> using Minute = Unit<Time, ValueType, std::ratio<60>
 template<typename ValueType> using Hour = Unit<Time, ValueType, std::ratio<3600>>;
 template<typename ValueType> using Hertz = Unit<Frequency, ValueType>;
 
-// SI Prefixes
-using Exa = std::ratio<1000000000000000000ULL>;
-using Peta = std::ratio<1000000000000000ULL>;
-using Tera = std::ratio<1000000000000ULL>;
-using Giga = std::ratio<1000000000>;
-using Mega = std::ratio<1000000>;
-using Kilo = std::ratio<1000>;
-using Hecto = std::ratio<100>;
-using Deca = std::ratio<10>;
-using Deci = std::ratio<1, 10>;
-using Centi = std::ratio<1, 100>;
-using Milli = std::ratio<1, 1000>;
-using Micro = std::ratio<1, 1000000>;
-using Nano = std::ratio<1, 1000000000>;
-using Pico = std::ratio<1, 1000000000000ULL>;
-using Femto = std::ratio<1, 1000000000000000ULL>;
-using Atto = std::ratio<1, 1000000000000000000ULL>;
-
-
 namespace Literals {
   inline constexpr Meter<double> operator"" _m(long double val) noexcept
   {

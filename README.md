@@ -41,6 +41,12 @@ using Inch = Unit<Length, double, std::ratio<254, 10000>>;
 static_assert(Inch(1.0).get_value_in<Meter<double>>() == 0.0254);
 ```
 
+[`std::ratio'](https://en.cppreference.com/w/cpp/numeric/ratio/ratio) provides convenient typedefs for SI prefixes:
+```cpp
+#include <ratio>
+using Kilohertz = Unit<Frequency, double, std::kilo>;
+```
+
 Create new dimensions by explicitly stating them in terms of SI base unit dimensions or by deriving them from existing dimensions:
 ```cpp
 using Velocity = Dimension<

@@ -24,6 +24,10 @@ int main(int, char **)
   constexpr Candela<double> candela(1.0);
   static_assert(meter.get_value() == 1.0, "One meter should have a value of 1.0");
 
+  using Kilohertz = Unit<Frequency, double, std::kilo>;
+  constexpr Kilohertz kilohertz(1.0);
+  static_assert(kilohertz.get_base_value() == 1000.0, "One kilohertz should have a base value of 1000.0");
+
   // Test for dimensional analysis - multiplication
   constexpr Newton<double> newton = 2.0 * kilogram * (10.0 * meter / (2.0 * second * 2.0 * second));
   static_assert(newton.get_value() == 5.0, "Calculation of force in newtons failed");
