@@ -21,7 +21,6 @@ Make sure your compiler supports C++20, as Unitlib makes extensive use of C++20 
 
 ## Usage
 
-### Defining Units
 Use predefined unit types for SI units by stating their types or using literals:
 
 ```cpp
@@ -34,11 +33,21 @@ using namespace Unitlib::Literals;
 auto temperature = 1_K;
 auto substance_amount = 1.0_mol;
 ```
-
-You can create new Units with existing dimensions:
+### Defining new units
+You can define new Units with existing dimensions by stating `ValueType`, as well as `ScalingFactor` and `Offset` relative to the base SI units:
 ```cpp
+// Only scaling factor, offset defaults to `std::ratio<0>`
 using Inch = Unit<Length, double, std::ratio<254, 10000>>;
 static_assert(Inch(1.0).get_value_in<Meter<double>>() == 0.0254);
+
+// Only offset with neutral scaling factor `std::ratio<1>`
+using Celsius = Unit<Temperature, double, std::ratio<1>, std::ratio<27315, 100>>;
+static_assert(Celsius(23.0).get_base_value() == 296.15);
+
+// Both offset and scaling factor
+using Fahrenheit = Unit<Temperature, double, std::ratio<5, 9>, std::ratio<45967, 100>>;
+static_assert(std::abs(Celsius(23.0).get_value_in<Fahrenheit>() - 73.4) < 0.1);
+static_assert(std::abs(Fahrenheit(73.4).get_base_value() - 296.15) < 0.1);
 ```
 
 [`std::ratio'](https://en.cppreference.com/w/cpp/numeric/ratio/ratio) provides convenient typedefs for SI prefixes:
@@ -47,7 +56,8 @@ static_assert(Inch(1.0).get_value_in<Meter<double>>() == 0.0254);
 using Kilohertz = Unit<Frequency, double, std::kilo>;
 ```
 
-Create new dimensions by explicitly stating them in terms of SI base unit dimensions or by deriving them from existing dimensions:
+### Defining new dimensions
+Define new dimensions by explicitly stating them in terms of SI base unit dimensions or by deriving them from existing dimensions:
 ```cpp
 using Velocity = Dimension<
     std::ratio<1>,  // Length
