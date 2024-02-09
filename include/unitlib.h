@@ -64,6 +64,14 @@ public:
   explicit constexpr Unit(const ValueType &value) noexcept : value_(value) {}
 
   constexpr ValueType get_value() const noexcept { return value_; }
+  static constexpr ValueType get_scaling_factor() noexcept
+  {
+    return static_cast<ValueType>(ScalingFactor::num) / static_cast<ValueType>(ScalingFactor::den);
+  }
+  static constexpr ValueType get_offset() noexcept
+  {
+    return static_cast<ValueType>(Offset::num) / static_cast<ValueType>(Offset::den);
+  }
 
   template<typename TargetUnit>
   requires std::is_same_v<Dimension, typename TargetUnit::_Dimension> && std::is_same_v<ValueType,
@@ -71,18 +79,11 @@ public:
   constexpr ValueType get_value_in() const noexcept
   {
     const ValueType valueInTargetUnitScale =
-      get_base_value()
-        * (static_cast<ValueType>(TargetUnit::_ScalingFactor::den)
-           / static_cast<ValueType>(TargetUnit::_ScalingFactor::num))
-      - (static_cast<ValueType>(TargetUnit::_Offset::num) / static_cast<ValueType>(TargetUnit::_Offset::den));
+      get_base_value() / TargetUnit::get_scaling_factor() - TargetUnit::get_offset();
     return valueInTargetUnitScale;
   }
 
-  constexpr ValueType get_base_value() const noexcept
-  {
-    return (get_value() + (static_cast<ValueType>(Offset::num) / static_cast<ValueType>(Offset::den)))
-           * (static_cast<ValueType>(ScalingFactor::num) / static_cast<ValueType>(ScalingFactor::den));
-  }
+  constexpr ValueType get_base_value() const noexcept { return (get_value() + get_offset()) * get_scaling_factor(); }
 
   // Conversion function to another unit within the same dimension
   template<typename OtherUnit>
