@@ -69,8 +69,6 @@ int main(int, char **)
   static_assert(std::abs(Celsius(23.0).get_value_in<Fahrenheit>() - 73.4) < 0.1);
   static_assert(std::abs(Fahrenheit(73.4).get_base_value() - 296.15) < 0.1);
 
-  // Test for arithmetic operations
-
   // Test literals
   constexpr auto acceleration = 1.0_m / (1.0_s * 1.0_s);
   static_assert(acceleration.get_value() == 1.0, "Floating point literal failed");
@@ -82,4 +80,16 @@ int main(int, char **)
 
   // Test concepts
   static_assert(reynolds_number(1_m / 1_s, 1_m, 1_m * 1_m / 1_s).get_value() == 1);
+
+  // Test for comparisons
+  static_assert(Meter<double>(1.0) < Meter<double>(2.0));
+  static_assert(Meter<double>(1.0) <= Meter<double>(2.0));
+  static_assert(Meter<double>(2.0) > Meter<double>(1.0));
+  static_assert(Meter<double>(2.0) >= Meter<double>(1.0));
+  static_assert(Meter<double>(1.0) == Meter<double>(1.0));
+  static_assert(Meter<double>(1.0) != Meter<double>(2.0));
+  static_assert(Kilometer<double>(1.0) == Meter<double>(1000.0));
+  static_assert(Kilometer<double>(1.0) != Meter<double>(1001.0));
+  static_assert(Kilometer<double>(1.0) < Meter<double>(1001.0));
+  static_assert(Kilometer<double>(1.0) <= Meter<double>(1001.0));
 }

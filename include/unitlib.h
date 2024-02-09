@@ -1,3 +1,4 @@
+#include <compare>
 #include <concepts>
 #include <ratio>
 #include <type_traits>
@@ -87,6 +88,13 @@ public:
   template<typename OtherUnit>
   requires std::is_same_v<Dimension, typename OtherUnit::_Dimension>
   constexpr operator OtherUnit() const noexcept { return OtherUnit(this->template get_value_in<OtherUnit>); }
+
+  template<typename OtherUnit>
+  requires std::is_same_v<Unit::_Dimension, typename OtherUnit::_Dimension>
+  constexpr auto operator<=>(const OtherUnit &other) const noexcept
+  {
+    return get_base_value() <=> other.get_base_value();
+  }
 
   template<typename OtherUnit>
   requires std::is_same_v<Dimension, typename OtherUnit::_Dimension> && std::is_same_v<ValueType,
