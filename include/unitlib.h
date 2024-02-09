@@ -118,7 +118,7 @@ public:
   requires std::is_same_v<ValueType, OtherValueType>// Relax to compatibility
   constexpr auto operator*(const OtherValueType &other) const noexcept
   {
-    return Unit<Dimension, std::common_reference_t<ValueType, OtherValueType>, ScalingFactor>{ get_value() * other };
+    return Unit<Dimension, std::common_type_t<ValueType, OtherValueType>, ScalingFactor>{ get_value() * other };
   }
 
   template<typename OtherUnit>
