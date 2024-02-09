@@ -62,11 +62,8 @@ int main(int, char **)
   static_assert(Inch(1.0).get_value_in<Meter<double>>() == 0.0254);
 
   // Custom unit definition with offset
-  using Celsius = Unit<Temperature, double, std::ratio<1>, std::ratio<27315, 100>>;
-  static_assert(Celsius(23.0).get_base_value() == 296.15);
-
   using Fahrenheit = Unit<Temperature, double, std::ratio<5, 9>, std::ratio<45967, 100>>;
-  static_assert(std::abs(Celsius(23.0).get_value_in<Fahrenheit>() - 73.4) < 0.1);
+  static_assert(std::abs(DegreeCelsius<double>(23.0).get_value_in<Fahrenheit>() - 73.4) < 0.1);
   static_assert(std::abs(Fahrenheit(73.4).get_base_value() - 296.15) < 0.1);
 
   // Test literals

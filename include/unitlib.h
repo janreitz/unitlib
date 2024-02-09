@@ -234,9 +234,7 @@ template<typename ValueType> using Siemens = Unit<ElectricalConductance, ValueTy
 template<typename ValueType> using Weber = Unit<MagneticFlux, ValueType>;
 template<typename ValueType> using Tesla = Unit<MagneticFluxDensity, ValueType>;
 template<typename ValueType> using Henry = Unit<Inductance, ValueType>;
-// TODO: How to handle units with offsets?
-// template<typename ValueType> using DegreeCelsius = Unit<Temperature , ValueType>; // Celsius	°C	temperature
-// relative to 273.15 K	K
+template<typename ValueType> using DegreeCelsius = Unit<Temperature, double, std::ratio<1>, std::ratio<27315, 100>>;
 template<typename ValueType> using Lumen = Unit<LuminousFlux, ValueType>;
 template<typename ValueType> using Lux = Unit<Illuminance, ValueType>;
 template<typename ValueType> using Becquerel = Unit<RadioactiveDose, ValueType>;
