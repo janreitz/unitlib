@@ -1,0 +1,4 @@
+# unitlibConfig.cmake
+
+# Include the targets file which was exported by the install command
+include("${CMAKE_CURRENT_LIST_DIR}/unitlibTargets.cmake")
