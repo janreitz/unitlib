@@ -78,6 +78,8 @@ int main(int, char **)
   // Test concepts
   static_assert(reynolds_number(1_m / 1_s, 1_m, 1_m * 1_m / 1_s).get_value() == 1);
 
+  static_assert(is_instance_of_unit_v<Meter<int>>);
+
   // Test for comparisons
   static_assert(Meter<double>(1.0) < Meter<double>(2.0));
   static_assert(Meter<double>(1.0) <= Meter<double>(2.0));
