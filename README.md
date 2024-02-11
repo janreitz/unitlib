@@ -12,12 +12,22 @@ The design philosophy of Unitlib is to offer clear and intuitive unit handling w
 - **Extensibility**: Easily extendable to include new units and dimensions as needed.
 
 ## Getting Started
-To start using Unitlib in your project, include the provided header file in your C++ source files:
+To start using Unitlib in your project, include the provided header and make sure your compiler supports C++20, as Unitlib makes extensive use of C++20 features such as `concepts` and `constexpr`.
 
 ```cpp
-#include "Unitlib.h"
+#include "unitlib.hpp"
 ```
-Make sure your compiler supports C++20, as Unitlib makes extensive use of C++20 features such as `concepts` and `constexpr`.
+You can also install Unitlib using CMake
+
+```sh
+mkdir build && cd build
+cmake ..
+make install
+```
+And then use `find_package` in your own `CMakeLists.txt` to setup include paths and C++ version.
+```py
+find_package(unitlib REQUIRED)
+```
 
 ## Usage
 
