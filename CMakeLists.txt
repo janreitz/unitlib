@@ -14,6 +14,9 @@ target_include_directories(unitlib INTERFACE
     $<INSTALL_INTERFACE:include>  # <prefix>/include when installed
 )
 
+
+enable_testing()
+
 # Installation rules for the header file
 install(FILES include/unitlib.hpp DESTINATION include)
 
