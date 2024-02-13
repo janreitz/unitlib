@@ -13,6 +13,8 @@ constexpr auto reynolds_number(const U &flow_speed, const L &characteristic_leng
   return flow_speed * characteristic_length / kinematic_viscosity;
 }
 
+template<typename T> constexpr T constexpr_abs(T x) { return x < T(0) ? -x : x; }
+
 int main(int, char **)
 {
   // Test for basic instantiation and value retrieval
@@ -63,8 +65,8 @@ int main(int, char **)
 
   // Custom unit definition with offset
   using Fahrenheit = Unit<Temperature, double, std::ratio<5, 9>, std::ratio<45967, 100>>;
-  static_assert(std::abs(DegreeCelsius<double>(23.0).get_value_in<Fahrenheit>() - 73.4) < 0.1);
-  static_assert(std::abs(Fahrenheit(73.4).get_base_value() - 296.15) < 0.1);
+  static_assert(constexpr_abs(DegreeCelsius<double>(23.0).get_value_in<Fahrenheit>() - 73.4) < 0.1);
+  static_assert(constexpr_abs(Fahrenheit(73.4).get_base_value() - 296.15) < 0.1);
 
   // Test literals
   constexpr auto acceleration = 1.0_m / (1.0_s * 1.0_s);
