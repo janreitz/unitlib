@@ -6,6 +6,8 @@ add_library(unitlib INTERFACE)
 
 target_compile_features(unitlib INTERFACE cxx_std_20)
 
+add_subdirectory(tests)
+
 # Specify the include directory for the interface library
 target_include_directories(unitlib INTERFACE
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
