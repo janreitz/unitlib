@@ -43,7 +43,7 @@ using DivideDimensions = Dimension<std::ratio_subtract<typename D1::L, typename 
   std::ratio_subtract<typename D1::J, typename D2::J>>;
 
 template<typename Dimension, typename ValueType, typename ScalingFactor, typename Offset>
-requires std::is_arithmetic_v<ValueType>
+requires std::is_arithmetic_v<ValueType> && (ScalingFactor::num != 0)
 class Unit;
 
 // Primary template, defaults to false
@@ -65,12 +65,9 @@ template<typename Dimension,
   typename ValueType,
   typename ScalingFactor = std::ratio<1>,
   typename Offset = std::ratio<0>>
-requires std::is_arithmetic_v<ValueType>
+requires std::is_arithmetic_v<ValueType> && (ScalingFactor::num != 0)
 class Unit
 {
-  // TODO Can this be a concept?
-  static_assert(ScalingFactor::num != 0, "ScalingFactor must not be zero");
-
   ValueType value_;
 
 public:
